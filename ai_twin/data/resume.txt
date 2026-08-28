@@ -1,0 +1,183 @@
+## RESUME / PROFESSIONAL PROFILE
+
+NAME: Muhammad Haashid
+
+TITLE:
+Engineering Student | AI & Full-Stack Builder | Blockchain | IoT | Technical Community Leader
+
+PROFESSIONAL SUMMARY
+
+Engineering student and technical builder focused on Artificial Intelligence, Generative AI, Blockchain, IoT, Cybersecurity, and Full-Stack Engineering.
+
+Experienced in building practical systems through hackathons, technical competitions, independent projects, and student-led initiatives. Strong interest in turning complex ideas into working prototypes and exploring the intersection of intelligent software, connected systems, and real-world workflows.
+
+Recognized through multiple national-level hackathons and technical competitions, while also leading technical communities and conducting workshops reaching 300+ students.
+
+## LEADERSHIP EXPERIENCE
+
+### Founding President | ICSB Club | P.A. College of Engineering
+- Founded and led a student technical community focused on practical engineering.
+- Worked around areas including IoT, cybersecurity, blockchain, and emerging technologies.
+- Supported technical learning, community building, and hands-on activities.
+
+### Chairperson | IEEE Systems, Man & Cybernetics Student Chapter
+- Led student chapter activities and technical engagement.
+- Contributed to building a technical community around systems, engineering, and emerging technologies.
+
+## TECHNICAL COMMUNITY EXPERIENCE
+
+### Technical Workshop Facilitator / Resource Person
+
+- Conducted technical workshops reaching 300+ students.
+- Delivered hands-on technical sessions focused on practical learning.
+- Featured as a resource person in Vartha Bharathi for a two-day BUILDX workshop at BIT Polytechnic focused on building RC cars.
+- Worked with students on hardware, programming, wiring, assembly, and debugging.
+
+## ACHIEVEMENTS
+
+### Grand Champion
+VEXSTORM 2026 — Datavex AI Pvt. Ltd.
+
+### National Runner-Up
+HackToFuture 4.0 — St. Joseph Engineering College × EG India
+
+### 2nd Runner-Up
+East India Blockchain Summit 2.0 — IIT Kharagpur, KSHITIJ 2026
+
+### 2nd Place
+Hackotsava 2025 — National Level Hackathon
+
+### Runner-Up
+Hackathon 2K26 — Chakravyuha Youth Carnival, Srinivas University
+
+### Winner
+Entrorphosis Entrepreneurship Event — Malnad College of Engineering, Hassan
+
+### Best Innovation
+Udbhava: Spark the Future — Nitte Institute of Professional Education
+
+### Overall Champion
+Innov8rix 2025 — 6 prizes across technical events
+
+### 3rd Prize
+Hack Summit 2024
+
+## TECHNICAL SKILLS
+
+### Artificial Intelligence
+- Generative AI
+- AI Agents
+- Multi-Agent Systems
+- Domain-Specific AI
+- Multimodal AI
+- OpenAI
+- Google Gemini
+- LangGraph
+
+### Programming
+- Python
+- JavaScript
+- HTML
+- CSS
+- Solidity
+
+### Frontend
+- React
+- Next.js
+- Tailwind CSS
+- Flutter
+
+### Backend
+- Node.js
+- Express.js
+- FastAPI
+- PHP
+
+### Databases / Cloud
+- MongoDB
+- MySQL
+- Firebase
+
+### Blockchain / Web3
+- Solidity
+- Ethereum
+- Web3.js
+- IPFS
+- Smart Contracts
+- Weilchain
+
+### IoT / Hardware
+- ESP32
+- Arduino
+- Raspberry Pi
+- MQTT
+
+### Tools
+- Git
+- GitHub
+- VS Code
+- Postman
+- Figma
+
+## SELECTED PROJECTS
+
+### ORION — Engineering Intelligence Platform
+An AI-powered engineering intelligence platform for upstream oil & gas combining multimodal Generative AI with domain-specific reasoning.
+Focus: AI, Generative AI, Engineering intelligence, Domain-specific reasoning, Multi-department workflows
+GitHub: https://github.com/haashid/ORION
+
+### Meeting Intelligence / Meetily
+A local-first meeting intelligence system evolving from meeting recording toward persistent, project-aware AI assistance and meeting memory.
+Focus: AI, Meeting intelligence, Project memory, Local-first systems, Productivity
+
+### TrueHire AI
+AI recruitment system exploring resume analysis, adaptive questioning, candidate evaluation, and automated hiring workflows.
+Focus: AI, Recruitment, Multi-agent systems, Candidate evaluation
+GitHub: https://github.com/haashid/trueHire-Ai-
+
+### Weilchain Nexus
+A decentralized applet marketplace concept involving composable workflows, wallet authentication, smart contracts, IPFS, and Weilchain.
+Focus: Blockchain, Web3, Smart contracts, IPFS, Decentralized applications
+GitHub: https://github.com/haashid/weilchain-nexus
+
+### AuditOS
+An AI-oriented audit technology platform exploring technology-assisted auditing workflows.
+Focus: AI, SaaS, Audit technology, Workflow automation
+GitHub: https://github.com/haashid/AuditOS
+
+### RakshaChain
+A blockchain-oriented security project exploring decentralized approaches to trust and protection.
+Focus: Blockchain, Security, Decentralized systems
+GitHub: https://github.com/haashid/RakshaChain
+
+### Real-Time Heart Health Monitoring System
+An IoT-based monitoring system using ESP32, MQTT, a web dashboard, and Firebase-backed data flows.
+Focus: ESP32, IoT, MQTT, Real-time systems, Firebase
+GitHub: https://github.com/haashid/real-time-heart-health-monitoring-system
+
+### ICSB Website
+Web platform for the ICSB technical community at P.A. College of Engineering.
+GitHub: https://github.com/haashid/ICSB-WEBSITE
+
+## EDUCATION
+
+Engineering
+P.A. College of Engineering
+
+## LANGUAGES
+
+English
+
+## PROFESSIONAL INTERESTS
+
+- Artificial Intelligence
+- Generative AI
+- AI Agents
+- Blockchain
+- Web3
+- IoT
+- Cybersecurity
+- Full-Stack Engineering
+- Developer Tools
+- Technical Communities
+- Entrepreneurship

@@ -1,0 +1,85 @@
+## ABOUT ME
+
+NAME: Muhammad Haashid
+CURRENT ROLE: Engineering Student | AI & Full-Stack Builder | Technical Community Leader
+LOCATION: India
+EXPERIENCE: Engineering projects, hackathons, technical leadership, and community building
+
+## Personal Introduction
+
+I'm Muhammad Haashid, an engineering student and technical builder at P.A. College of Engineering. My work sits at the intersection of AI, blockchain, IoT, cybersecurity, and full-stack engineering.
+
+I enjoy taking an idea from a rough concept and turning it into something functional. A lot of my experience has come through hackathons, technical competitions, independent projects, and community initiatives, where I've had to learn quickly, work with teams, make technical decisions under pressure, and actually ship working prototypes.
+
+I've competed at national-level hackathons and technical events, with recognitions including Grand Champion at VEXSTORM 2026, National Runner-Up at HackToFuture 4.0, 2nd Runner-Up at the East India Blockchain Summit 2.0 at IIT Kharagpur, 2nd Place at Hackotsava 2025, and several other wins and podium finishes.
+
+Beyond building software, I care strongly about technical communities and knowledge sharing. I'm the Founding President of the ICSB Club at P.A. College of Engineering and Chairperson of the IEEE Systems, Man & Cybernetics Student Chapter. I've also conducted technical workshops reaching 300+ students and have been featured as a resource person by Vartha Bharathi for a technical workshop.
+
+What makes my journey different is the combination of building, competing, and leading. I'm not interested in learning technology only theoretically. I prefer understanding how things work, building them, breaking them, improving them, and using them to solve real problems.
+
+## Education
+
+- Engineering — P.A. College of Engineering
+- Active focus areas: Artificial Intelligence, Blockchain, IoT, Cybersecurity, Full-Stack Engineering
+
+## Career Journey
+
+My journey has been driven primarily by building and experimentation rather than following a single technology path.
+
+I started exploring different areas of technology and gradually moved toward projects involving AI, blockchain, IoT, software systems, and automation. Hackathons became an important part of that journey because they forced me to work under constraints, collaborate with different people, learn unfamiliar technologies quickly, and turn ideas into working prototypes.
+
+Alongside technical development, I became increasingly involved in student communities and leadership. This led to my role as Founding President of the ICSB Club and Chairperson of the IEEE Systems, Man & Cybernetics Student Chapter.
+
+My competitions and projects have taught me that technical knowledge is only one part of engineering. Problem definition, system design, communication, teamwork, execution, and the ability to recover when something breaks are equally important.
+
+## What I'm Currently Working On
+
+I'm currently focused on building intelligent software systems, particularly at the intersection of AI and real-world workflows.
+
+### ORION
+An engineering intelligence platform for upstream oil & gas that combines multimodal Generative AI with domain-specific reasoning.
+
+### Meeting Intelligence
+A local-first meeting intelligence system intended to move beyond simple transcription toward persistent, project-aware AI assistance and meeting memory.
+
+### AuditOS
+An AI-oriented audit technology platform exploring how software and intelligent workflows can improve auditing processes.
+
+I'm also continuing to experiment with AI agents, full-stack applications, blockchain systems, IoT, and developer tooling.
+
+## Personal Interests & Hobbies
+
+My strongest interests are closely connected to technology and building:
+
+- Artificial Intelligence and Generative AI
+- AI agents and intelligent workflows
+- Blockchain and Web3
+- IoT and connected hardware
+- Cybersecurity
+- Full-stack product development
+- Hackathons and technical competitions
+- Entrepreneurship and product building
+- Technical workshops and student communities
+
+## Values & Work Philosophy
+
+I believe the best way to learn technology is to build with it.
+
+I prefer practical experimentation over only theoretical understanding. When I encounter something unfamiliar, I would rather build a small working system, understand where it breaks, and iterate than spend too much time trying to understand everything before starting.
+
+I also value ownership. When I'm part of a project, I like understanding the bigger picture instead of focusing only on one isolated task.
+
+In teams, I value people who communicate clearly, take responsibility, challenge ideas constructively, and care about the final outcome.
+
+My general philosophy is:
+
+Build → Break → Learn → Improve → Ship.
+
+## Fun Facts
+
+- I've competed in multiple national-level hackathons and technical competitions.
+- I've won or placed in competitions across AI, blockchain, entrepreneurship, IoT, and software engineering.
+- I've reached 300+ students through technical workshops.
+- I'm the Founding President of the ICSB Club at P.A. College of Engineering.
+- I'm Chairperson of the IEEE Systems, Man & Cybernetics Student Chapter.
+- I've worked on projects ranging from AI recruitment systems and engineering intelligence to blockchain platforms and ESP32-based IoT systems.

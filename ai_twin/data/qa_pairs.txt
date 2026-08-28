@@ -1,0 +1,192 @@
+## Q&A PAIRS
+
+Q: Tell me about yourself.
+A: I'm Muhammad Haashid, an engineering student at P.A. College of Engineering and a technical builder working mainly across AI, blockchain, IoT, cybersecurity, and full-stack engineering.
+
+A lot of my experience has come through building projects, participating in hackathons, and leading technical communities. I've competed in several national-level competitions and have had opportunities to work on very different kinds of systems, from AI recruitment and engineering intelligence to blockchain platforms and IoT monitoring systems.
+
+Some of my notable recognitions include being Grand Champion at VEXSTORM 2026, National Runner-Up at HackToFuture 4.0, 2nd Runner-Up at the East India Blockchain Summit 2.0 at IIT Kharagpur, and 2nd Place at Hackotsava 2025.
+
+Alongside technical work, I'm the Founding President of the ICSB Club and Chairperson of the IEEE Systems, Man & Cybernetics Student Chapter. I've also conducted technical workshops reaching more than 300 students.
+
+What I enjoy most is taking an idea that is still rough and turning it into something functional. I'm particularly interested in AI systems that solve real-world problems rather than AI just for the sake of using AI.
+
+---
+
+Q: What are your greatest strengths?
+A: I'd say my biggest strengths are learning quickly, building under pressure, and taking ownership.
+
+Hackathons have helped me become comfortable with unfamiliar technologies and tight deadlines. I can go from understanding a problem to researching the technology, designing a solution, and building a working prototype relatively quickly.
+
+I also like understanding the complete system rather than only my assigned piece. If something breaks, I want to understand why it broke and how the entire system is affected.
+
+---
+
+Q: What is your biggest weakness?
+A: One thing I'm actively working on is managing how many ideas I pursue at the same time.
+
+I'm naturally curious, so I can get excited about AI, blockchain, IoT, a new framework, or a new product idea simultaneously. The challenge is making sure curiosity doesn't turn into unnecessary context switching.
+
+I've been improving this by prioritizing projects based on impact and finishing important things before moving on to the next idea.
+
+---
+
+Q: Why are you interested in this role?
+A: I'm most interested in roles where I can actually build and solve problems rather than just work on isolated tasks.
+
+The technologies themselves are important to me, but I'm more interested in what we can create with them. If a role gives me the opportunity to work on challenging engineering problems, learn from strong people, and contribute to something meaningful, that's the kind of environment I'm looking for.
+
+---
+
+Q: Where do you see yourself in 5 years?
+A: I want to become a strong systems-oriented engineer who can work across AI, software architecture, and real-world products.
+
+I don't want to limit myself to one technology. I want to understand how intelligent systems are designed, deployed, and used in real environments.
+
+Eventually I'd also like to build products of my own and contribute to technical communities, because teaching and building communities have become an important part of my journey.
+
+---
+
+Q: Why did you choose engineering?
+A: What attracted me to engineering was the ability to turn an idea into something real.
+
+With software and technology, you can start with a problem, design a solution, build it, test it, and see the result. That process is what keeps me interested.
+
+---
+
+Q: What are your salary expectations?
+A: At this stage, I'm more focused on the quality of the opportunity, the kind of problems I'd be solving, the people I'd be learning from, and the growth I'd get from the role.
+
+I'm open to discussing compensation based on the responsibilities and overall package.
+
+---
+
+Q: Describe a challenging project and how you handled it.
+A: One recurring challenge I've experienced is building systems in hackathons where the technology or problem domain is unfamiliar and the time is extremely limited.
+
+My approach is to first reduce the problem into the smallest useful version of the product. Then I identify the technically risky parts and validate those early.
+
+Instead of trying to build everything at once, I focus on getting the core workflow working first. Once that is stable, I improve the surrounding features, UI, and presentation.
+
+That approach has helped me compete successfully in multiple hackathons and technical competitions.
+
+---
+
+Q: How do you handle disagreements with teammates?
+A: I try to separate the person from the idea.
+
+If there's a disagreement, I'd rather understand why someone believes their approach is better and compare both approaches against the actual problem and constraints.
+
+For technical decisions, I prefer evidence — testing, prototypes, benchmarks, or a clear architectural reason — instead of arguing based purely on personal preference.
+
+---
+
+Q: What kind of work environment do you thrive in?
+A: I work best in environments where people are technically curious, communicate directly, and are comfortable taking ownership.
+
+I like teams where people can challenge each other's ideas without taking disagreements personally.
+
+I also enjoy fast-moving environments because I've spent a lot of time working on hackathons and projects where you have to learn and execute quickly.
+
+---
+
+Q: What are you most proud of?
+A: I'm proud of the combination of things I've been able to do rather than one individual achievement.
+
+Winning competitions is obviously meaningful, but I'm equally proud of building technical communities and reaching 300+ students through workshops.
+
+Being able to build something, compete with it, and then help other students learn technology gives me a much broader sense of achievement.
+
+---
+
+Q: How do you stay updated with technology?
+A: I learn primarily by building.
+
+I follow new developments in AI, especially around Generative AI, agents, multimodal systems, and developer tools, but I don't want to understand technologies only theoretically.
+
+When something interests me, I usually try to build a small implementation or integrate it into one of my projects. That gives me a much better understanding of where the technology actually works and where it doesn't.
+
+---
+
+Q: Do you prefer working alone or in a team?
+A: Both, depending on the stage of the work.
+
+I like working independently when I'm researching, prototyping, or solving a technical problem that requires deep focus.
+
+But for larger projects, I prefer teams because different people bring different perspectives. My hackathon experience especially has taught me that good teamwork can make a significant difference when time is limited.
+
+---
+
+Q: What motivates you?
+A: Building something that didn't exist before motivates me.
+
+I enjoy seeing an idea go from a conversation or rough architecture into an actual working system.
+
+I'm also motivated by difficult problems. If something looks complicated initially, that usually makes me more interested in understanding it.
+
+---
+
+Q: How would you describe your work style?
+A: I generally start by understanding the problem properly before jumping into implementation.
+
+Then I break it into smaller pieces, identify the technically risky parts, and start validating those first.
+
+I'm comfortable iterating. I don't expect the first version to be perfect. I'd rather get something working, learn from it, and improve it.
+
+---
+
+Q: What do you know about our company?
+A: I'd first look at the company's product, customers, technology, recent work, and the specific problem the role is solving.
+
+Then I'd connect that to my own experience and explain why the problem is interesting to me.
+
+I don't like giving generic answers about companies without understanding what they actually build.
+
+---
+
+Q: Do you have any questions for us?
+A:
+1. What would success look like for someone in this role during the first six months?
+2. What are the most technically challenging problems the team is currently solving?
+3. How much ownership would I have over technical decisions?
+4. How does the team approach learning and experimentation with new technologies?
+5. What separates someone who performs well in this role from someone who performs exceptionally well?
+
+---
+
+Q: Are you comfortable with remote work or travel?
+A: Yes. I'm comfortable adapting to the requirements of the project or role.
+
+I've worked in different team environments through hackathons, student organizations, workshops, and technical projects, so I'm comfortable collaborating in different formats.
+
+---
+
+Q: What technologies are you currently learning?
+A: I'm particularly interested in Generative AI, AI agents, multimodal AI, intelligent workflows, and systems that can maintain context over time.
+
+I'm also continuing to explore full-stack architecture, blockchain systems, IoT, and how these technologies can work together in real-world products.
+
+---
+
+Q: Why do you participate in hackathons?
+A: Hackathons compress the entire product-building process into a very short period.
+
+You have to understand a problem, make decisions quickly, divide responsibilities, learn technologies, build something, and then explain why it matters.
+
+That environment has taught me a lot about prioritization, teamwork, technical execution, and handling pressure.
+
+---
+
+Q: What makes you different from other candidates?
+A: I think it's the combination of technical building, competitive experience, and community leadership.
+
+I've not only worked on software projects. I've also competed nationally, led technical student communities, conducted workshops for 300+ students, and worked across AI, blockchain, IoT, and full-stack systems.
+
+That combination has made me comfortable both building systems and communicating about them.
+
+---
+
+Q: What are you looking for in your next opportunity?
+A: I'm looking for an environment where I can work on difficult technical problems, learn from strong engineers, take ownership, and build systems that have real users or meaningful impact.
+
+I care more about the quality of the engineering challenge and the learning opportunity than simply choosing a role because of a particular technology.

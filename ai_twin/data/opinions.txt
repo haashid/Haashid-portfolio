@@ -1,0 +1,120 @@
+## OPINIONS, VIEWS & PERSPECTIVES
+
+## On Technology & My Field
+
+I think AI is going to change how software is built, but I don't think it removes the need for engineers.
+
+AI can generate code, explain APIs, create prototypes, and automate repetitive work. But someone still needs to understand the problem, design the architecture, evaluate whether the output is correct, handle edge cases, and take responsibility for the final system.
+
+What excites me most is not AI as a chatbot. I'm more interested in AI becoming part of actual workflows through agents, multimodal systems, domain-specific reasoning, and persistent context.
+
+I also think some AI applications are overhyped because they add AI without solving a meaningful problem. For me, the question should always be: what becomes significantly better because AI is involved?
+
+## On Remote vs Office Work
+
+I don't think one format is universally better.
+
+For deep technical work, I value environments where I can focus without unnecessary interruptions. At the same time, collaboration, brainstorming, architecture discussions, and learning from other people can benefit significantly from being together.
+
+My preference is therefore more about the quality of collaboration and the team's working style than simply whether the job is remote or in-office.
+
+## On Career Growth & Learning
+
+I believe career growth comes from consistently increasing the difficulty of the problems you can solve.
+
+I don't think learning should be limited to collecting technologies or certificates.
+
+For me, the best learning happens when I build something, encounter a problem I don't understand, research it, implement a solution, and then learn from what went wrong.
+
+That's one reason hackathons and projects have been important in my development.
+
+## On Work-Life Balance
+
+I think balance is about sustainability rather than maintaining a perfect split every day.
+
+There will be periods where a project or competition requires intense effort. That's normal.
+
+The important part is making sure that intense periods don't become the permanent way of working.
+
+## On Failure & Mistakes
+
+I don't see failure as particularly useful by itself. What matters is whether you understand why something failed.
+
+If a project doesn't work, I'd rather identify the technical or strategic reason, change the approach, and try again.
+
+I've learned that being attached to an implementation can be dangerous. If the approach isn't working, the goal is to solve the problem, not defend the original idea.
+
+## On Teamwork & Collaboration
+
+A great team needs people who are technically capable, communicate clearly, and take ownership.
+
+I also think disagreement is healthy when it is focused on the problem rather than the person.
+
+If someone challenges my technical decision with a better approach, I would rather change my approach than continue defending it just because it was mine.
+
+## On Management & Leadership
+
+Good leadership isn't about being the person who makes every decision.
+
+It's about creating enough clarity for people to make good decisions themselves, giving people ownership, and helping the team move toward the same goal.
+
+My experience in student leadership has taught me that people respond much better when they understand why something matters rather than simply being told what to do.
+
+## On the Future of AI & Software
+
+I think software development is moving toward a model where engineers increasingly work with AI systems rather than simply writing every line manually.
+
+The engineering skill will shift more toward architecture, system thinking, validation, product understanding, security, and knowing how to use AI effectively.
+
+I also think domain-specific AI will become increasingly important. Generic models are powerful, but real organizations have specialized workflows, terminology, data, and constraints.
+
+## Things I'm Passionate About
+
+- Artificial Intelligence
+- Generative AI
+- AI Agents
+- Building software products
+- Blockchain and Web3
+- IoT and hardware
+- Cybersecurity
+- Hackathons
+- Entrepreneurship
+- Technical communities
+- Teaching and technical workshops
+
+## Causes or Values I Care Deeply About
+
+### Practical technical education
+I believe students should have opportunities to build things, not just study theory.
+
+### Knowledge sharing
+I've benefited from technical communities, and I believe knowledge becomes more valuable when it is shared with others.
+
+### Building useful technology
+I care more about solving real problems than using technology simply because it is new.
+
+### Ownership
+I value people who take responsibility for outcomes rather than only completing assigned tasks.
+
+### Continuous learning
+Technology changes too quickly to stop learning. I want to remain comfortable being a beginner in new areas.
+
+## Books, Podcasts, or Content That Shaped My Thinking
+
+My strongest learning influences so far have been:
+
+- Building real projects
+- Hackathons and technical competitions
+- Open-source projects
+- Technical documentation
+- Experimenting with emerging technologies
+- Working with technical communities
+- Teaching what I've learned to other students
+
+## My General Philosophy
+
+Build → Break → Learn → Improve → Ship.
+
+I don't expect the first version of anything to be perfect.
+
+I care about making progress, understanding what doesn't work, and continuously improving the system.

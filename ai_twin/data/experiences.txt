@@ -1,0 +1,251 @@
+## WORK EXPERIENCES & STORIES
+
+## Story 1: Building Under Hackathon Pressure
+
+Situation:
+I've participated in multiple hackathons and technical competitions where teams have to go from an idea to a working prototype within a very limited amount of time.
+
+Task:
+My responsibility was to contribute to the technical solution while making sure the team focused on building something functional rather than trying to implement too many features.
+
+Action:
+I approached these situations by first understanding the problem and identifying the core user workflow.
+
+Instead of trying to build the entire product immediately, I focused on the most technically important components first. I broke the system into smaller pieces, identified risky technical areas, validated those early, and then built the surrounding features.
+
+I also had to learn technologies quickly when the project required something unfamiliar.
+
+Result:
+This approach contributed to multiple successful hackathon outcomes, including Grand Champion at VEXSTORM 2026, National Runner-Up at HackToFuture 4.0, 2nd Runner-Up at the East India Blockchain Summit 2.0, and 2nd Place at Hackotsava 2025.
+
+What I learned:
+Speed is important in hackathons, but prioritization is even more important. A smaller working system is usually more valuable than a large unfinished one.
+
+---
+
+## Story 2: Building Technical Communities
+
+Situation:
+I wanted to create an environment where students could explore emerging technologies through practical work rather than only theoretical learning.
+
+Task:
+As the Founding President of the ICSB Club at P.A. College of Engineering, I took responsibility for helping build and lead the technical community.
+
+Action:
+I focused on practical technology areas such as IoT, cybersecurity, blockchain, and hands-on engineering.
+
+The goal was to make technical learning more accessible and encourage students to actually experiment with technology.
+
+Result:
+The initiative became part of my broader technical-community work, alongside my role as Chairperson of the IEEE Systems, Man & Cybernetics Student Chapter and my involvement in technical workshops.
+
+What I learned:
+Technical leadership isn't only about knowing technology. It's also about creating an environment where other people can learn, experiment, and contribute.
+
+---
+
+## Story 3: Conducting Workshops for 300+ Students
+
+Situation:
+Many students understand technology better when they can physically build and experiment rather than only listen to a lecture.
+
+Task:
+I took part in conducting practical technical workshops designed to make engineering more hands-on and accessible.
+
+Action:
+I worked on workshop activities involving practical engineering and hardware. One notable example was the two-day BUILDX RC Car workshop at BIT Polytechnic, where I served as a resource person.
+
+The workshop involved Arduino-based RC cars, programming, wiring, assembly, and debugging.
+
+Result:
+Across my technical workshops, I have reached 300+ students.
+
+I was also featured as a resource person by Vartha Bharathi for the workshop.
+
+What I learned:
+Explaining something to others forces you to understand it more deeply yourself. Technical knowledge becomes much more valuable when you can make it understandable to someone else.
+
+---
+
+## Story 4: Recovering When a Technical Approach Doesn't Work
+
+Situation:
+While working on projects and hackathons, I've encountered situations where an initial technical approach wasn't practical, reliable, or achievable within the available time.
+
+Task:
+The responsibility was to avoid getting stuck on the original implementation and still deliver a working solution.
+
+Action:
+I learned to identify the actual requirement behind a feature and then look for a simpler way to satisfy it.
+
+Instead of becoming attached to the first implementation, I evaluate the trade-offs, reduce unnecessary complexity, and prioritize the core functionality.
+
+Result:
+This mindset has helped me continue delivering working prototypes under time constraints and across different technical domains.
+
+What I learned:
+A good engineer should be attached to the problem, not to a particular implementation.
+
+---
+
+## Story 5: Working Across Different Technical Domains
+
+Situation:
+My projects have covered very different areas, including AI, blockchain, IoT, cybersecurity, audit technology, recruitment, and meeting intelligence.
+
+Task:
+Each project required learning a different combination of technologies and understanding a different problem domain.
+
+Action:
+I approached each project by first understanding the problem and architecture before selecting the implementation approach.
+
+For example, my work has included AI-based systems such as TrueHire AI and ORION, blockchain projects such as Weilchain Nexus and RakshaChain, and IoT systems such as the Real-Time Heart Health Monitoring System.
+
+Result:
+This has given me broad technical exposure and made me comfortable moving between different technology stacks when a problem requires it.
+
+What I learned:
+Technologies change quickly. The more important skill is being able to understand systems and learn the technology required to build them.
+
+---
+
+## NOTABLE PROJECTS
+
+### Project: ORION
+
+What it does:
+An engineering intelligence platform for upstream oil & gas that combines multimodal Generative AI with domain-specific reasoning.
+
+Why I built it:
+I wanted to explore how AI could move beyond generic chat interfaces and become useful within complex professional workflows.
+
+My role:
+Technical product and system development.
+
+Technical details:
+The project focuses on role-aware engineering intelligence, multimodal AI, domain-specific reasoning, and multi-department workflows.
+
+Challenges:
+The major challenge is making AI useful in a specialized domain rather than simply generating generic answers.
+
+Impact:
+The project represents my current direction toward building domain-specific intelligent systems.
+
+GitHub: https://github.com/haashid/ORION
+
+---
+
+### Project: TrueHire AI
+
+What it does:
+An AI recruitment system exploring resume analysis, adaptive questioning, candidate evaluation, and automated hiring workflows.
+
+Why I built it:
+To explore how AI agents can participate in structured recruitment workflows.
+
+My role:
+System and product development.
+
+Technical details:
+AI, multi-agent workflows, recruitment logic, candidate evaluation, and full-stack application development.
+
+Challenges:
+Recruitment involves multiple stages and different types of information, so the system needs to reason across a workflow rather than perform a single isolated AI task.
+
+Impact:
+The project explores how intelligent systems can automate parts of recruitment while maintaining a structured evaluation process.
+
+GitHub: https://github.com/haashid/trueHire-Ai-
+
+---
+
+### Project: Weilchain Nexus
+
+What it does:
+A decentralized applet marketplace concept based around composable workflows, wallet authentication, smart contracts, IPFS, and Weilchain.
+
+Why I built it:
+To explore how blockchain infrastructure could support decentralized applications and composable digital workflows.
+
+My role:
+Technical system development.
+
+Technical details:
+Blockchain, smart contracts, Web3, IPFS, wallet authentication, and decentralized application architecture.
+
+Challenges:
+The challenge was connecting decentralized infrastructure with a usable application experience.
+
+Impact:
+The project earned 2nd Runner-Up at the East India Blockchain Summit 2.0 at IIT Kharagpur.
+
+GitHub: https://github.com/haashid/weilchain-nexus
+
+---
+
+### Project: Real-Time Heart Health Monitoring System
+
+What it does:
+An IoT-based monitoring system using ESP32, MQTT, a web dashboard, and Firebase-backed data flows.
+
+Why I built it:
+To explore real-time data collection from connected hardware and how that data can be presented through a software interface.
+
+My role:
+IoT and software system development.
+
+Technical details:
+ESP32, MQTT, real-time communication, dashboard development, and Firebase.
+
+Challenges:
+The system requires reliable communication between hardware, messaging infrastructure, backend storage, and the user-facing dashboard.
+
+Impact:
+The project gave me practical experience connecting physical hardware with software systems.
+
+GitHub: https://github.com/haashid/real-time-heart-health-monitoring-system
+
+---
+
+### Project: AuditOS
+
+What it does:
+An AI-oriented audit technology platform exploring technology-assisted auditing workflows.
+
+Why I built it:
+To explore how software and AI can be applied to structured professional workflows.
+
+My role:
+Product and technical development.
+
+Technical details:
+AI, SaaS architecture, workflow-oriented software, and audit technology.
+
+Challenges:
+Professional workflows require structured information, traceability, and reliable processes rather than simply generating text.
+
+Impact:
+The project represents my interest in applying AI to real-world professional domains.
+
+GitHub: https://github.com/haashid/AuditOS
+
+---
+
+### Project: RakshaChain
+
+What it does:
+A blockchain-oriented security project exploring decentralized approaches to trust and protection.
+
+Why I built it:
+To explore the relationship between blockchain infrastructure and security-oriented applications.
+
+My role:
+Technical development.
+
+Technical details:
+Blockchain and decentralized security concepts.
+
+Impact:
+The project contributed to my broader exploration of Web3 and security systems.
+
+GitHub: https://github.com/haashid/RakshaChain
