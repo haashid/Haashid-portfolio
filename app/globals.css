@@ -1,4 +1,4 @@
-:root, [data-theme="dark"] {
+[data-theme="dark"] {
   --bg: #050505;
   --surface: rgba(255, 255, 255, 0.03);
   --surface-2: rgba(255, 255, 255, 0.08);
@@ -14,7 +14,7 @@
   --grid-line: rgba(255, 255, 255, 0.03);
 }
 
-[data-theme="light"] {
+:root, [data-theme="light"] {
   --bg: #f7f7f4;
   --surface: rgba(255, 255, 255, 0.78);
   --surface-2: #efefeb;
