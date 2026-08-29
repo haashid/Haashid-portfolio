@@ -260,7 +260,7 @@ h3 {
 .button.primary {
   border-color: var(--ink);
   background: var(--ink);
-  color: white;
+  color: var(--bg);
   box-shadow: 0 16px 34px rgba(18, 19, 17, 0.18);
 }
 
