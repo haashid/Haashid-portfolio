@@ -1,0 +1,651 @@
+// This is your Prisma schema file.
+// Learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// ──────────────────────────────────────────────
+// AUTH
+// ──────────────────────────────────────────────
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  passwordHash  String
+  name          String?
+  role          UserRole  @default(OWNER)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  sessions      Session[]
+  auditLogs     AuditLog[]
+  contentVersions ContentVersion[]
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  userId    String
+  token     String   @unique @default(cuid())
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+enum UserRole {
+  OWNER
+  ADMIN
+  EDITOR
+}
+
+// ──────────────────────────────────────────────
+// PROFILE & SITE
+// ──────────────────────────────────────────────
+
+model Profile {
+  id              String   @id @default(cuid())
+  name            String   @default("")
+  title           String   @default("")
+  shortBio        String   @default("") @db.Text
+  fullBio         String   @default("") @db.Text
+  location        String   @default("")
+  email           String   @default("")
+  phone           String?
+  website         String?
+  avatarUrl       String?
+  avatarAlt       String?
+  availabilityStatus AvailabilityStatus @default(OPEN_TO_OPPORTUNITIES)
+  availabilityMessage String?  @db.Text
+  preferredRoles  String[]
+  preferredLocations String[]
+  remoteOk        Boolean  @default(true)
+  hybridOk        Boolean  @default(true)
+  onSiteOk        Boolean  @default(false)
+  availableFrom   DateTime?
+  ctaText         String?
+  ctaUrl          String?
+  updatedAt       DateTime @updatedAt
+  createdAt       DateTime @default(now())
+}
+
+enum AvailabilityStatus {
+  OPEN_TO_WORK
+  OPEN_TO_INTERNSHIPS
+  OPEN_TO_FULL_TIME
+  OPEN_TO_FREELANCE
+  OPEN_TO_COLLABORATIONS
+  OPEN_TO_OPPORTUNITIES
+  NOT_AVAILABLE
+}
+
+model HeroContent {
+  id            String   @id @default(cuid())
+  heading       String   @default("")  @db.Text
+  subtitle      String   @default("")
+  description   String   @default("") @db.Text
+  badge         String?
+  primaryCta    String?
+  primaryCtaUrl String?
+  secondaryCta  String?
+  secondaryCtaUrl String?
+  heroImageUrl  String?
+  published     Boolean  @default(true)
+  updatedAt     DateTime @updatedAt
+  createdAt     DateTime @default(now())
+}
+
+model SiteSettings {
+  id              String   @id @default(cuid())
+  siteTitle       String   @default("")
+  metaDescription String   @default("") @db.Text
+  ogTitle         String?
+  ogDescription   String?  @db.Text
+  ogImageUrl      String?
+  faviconUrl      String?
+  canonicalUrl    String?
+  robotsTxt       String?  @db.Text
+  googleAnalyticsId String?
+  updatedAt       DateTime @updatedAt
+  createdAt       DateTime @default(now())
+}
+
+// ──────────────────────────────────────────────
+// THEME
+// ──────────────────────────────────────────────
+
+model Theme {
+  id              String   @id @default(cuid())
+  name            String   @default("Custom")
+  isActive        Boolean  @default(false)
+  preset          ThemePreset @default(DARK)
+
+  // Colors
+  colorBg         String   @default("#050505")
+  colorSurface    String   @default("rgba(255,255,255,0.03)")
+  colorSurface2   String   @default("rgba(255,255,255,0.08)")
+  colorInk        String   @default("#ffffff")
+  colorMuted      String   @default("#a1a1aa")
+  colorLine       String   @default("rgba(255,255,255,0.1)")
+  colorAccent     String   @default("#38bdf8")
+  colorAccentDark String   @default("#0ea5e9")
+  colorGold       String   @default("#fbbf24")
+
+  // Typography
+  fontHeading     String   @default("Inter")
+  fontBody        String   @default("Inter")
+  fontMono        String   @default("JetBrains Mono")
+
+  // Layout
+  containerWidth  String   @default("1180px")
+  cardRadius      String   @default("8px")
+  buttonRadius    String   @default("8px")
+
+  // Effects
+  enableGlow      Boolean  @default(true)
+  enableGridBg    Boolean  @default(true)
+  enableGlass     Boolean  @default(true)
+  enableAnimations Boolean @default(true)
+
+  updatedAt       DateTime @updatedAt
+  createdAt       DateTime @default(now())
+}
+
+enum ThemePreset {
+  DARK
+  LIGHT
+  MIDNIGHT
+  OCEAN
+  PURPLE
+  CUSTOM
+}
+
+// ──────────────────────────────────────────────
+// SECTIONS
+// ──────────────────────────────────────────────
+
+model Section {
+  id          String   @id @default(cuid())
+  key         String   @unique  // e.g. "hero", "projects", "achievements"
+  label       String
+  enabled     Boolean  @default(true)
+  order       Int      @default(0)
+  updatedAt   DateTime @updatedAt
+  createdAt   DateTime @default(now())
+}
+
+// ──────────────────────────────────────────────
+// PROJECTS
+// ──────────────────────────────────────────────
+
+model Project {
+  id              String        @id @default(cuid())
+  title           String
+  slug            String        @unique
+  shortDescription String        @db.Text
+  fullDescription String?       @db.Text
+  problem         String?       @db.Text
+  solution        String?       @db.Text
+  myRole          String?       @db.Text
+  technologies    String[]
+  category        String?
+  status          ProjectStatus @default(ACTIVE)
+  publishStatus   PublishStatus @default(DRAFT)
+  featured        Boolean       @default(false)
+  displayOrder    Int           @default(0)
+  startDate       DateTime?
+  endDate         DateTime?
+  githubUrl       String?
+  demoUrl         String?
+  docsUrl         String?
+  videoUrl        String?
+  coverImageUrl   String?
+  award           String?
+  tags            String[]
+  accentColor     String?
+
+  images          ProjectImage[]
+  auditLogs       AuditLog[]    @relation("ProjectAuditLogs")
+  versions        ContentVersion[] @relation("ProjectVersions")
+
+  updatedAt       DateTime @updatedAt
+  createdAt       DateTime @default(now())
+}
+
+model ProjectImage {
+  id        String  @id @default(cuid())
+  projectId String
+  url       String
+  alt       String?
+  order     Int     @default(0)
+
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+}
+
+// ──────────────────────────────────────────────
+// EXPERIENCE
+// ──────────────────────────────────────────────
+
+model Experience {
+  id              String         @id @default(cuid())
+  position        String
+  company         String
+  companyLogoUrl  String?
+  companyUrl      String?
+  location        String?
+  employmentType  EmploymentType @default(FULL_TIME)
+  startDate       DateTime
+  endDate         DateTime?
+  isCurrent       Boolean        @default(false)
+  description     String?        @db.Text
+  responsibilities String[]
+  achievements    String[]
+  technologies    String[]
+  featured        Boolean        @default(false)
+  displayOrder    Int            @default(0)
+  publishStatus   PublishStatus  @default(PUBLISHED)
+
+  updatedAt       DateTime @updatedAt
+  createdAt       DateTime @default(now())
+}
+
+enum EmploymentType {
+  FULL_TIME
+  PART_TIME
+  INTERNSHIP
+  FREELANCE
+  CONTRACT
+  VOLUNTEER
+  LEADERSHIP
+}
+
+// ──────────────────────────────────────────────
+// EDUCATION
+// ──────────────────────────────────────────────
+
+model Education {
+  id              String        @id @default(cuid())
+  institution     String
+  degree          String?
+  field           String?
+  startDate       DateTime?
+  endDate         DateTime?
+  isCurrent       Boolean       @default(false)
+  description     String?       @db.Text
+  grade           String?
+  institutionUrl  String?
+  logoUrl         String?
+  achievements    String[]
+  displayOrder    Int           @default(0)
+  publishStatus   PublishStatus @default(PUBLISHED)
+
+  updatedAt       DateTime @updatedAt
+  createdAt       DateTime @default(now())
+}
+
+// ──────────────────────────────────────────────
+// ACHIEVEMENTS
+// ──────────────────────────────────────────────
+
+model Achievement {
+  id              String        @id @default(cuid())
+  title           String
+  event           String
+  organization    String?
+  placement       String?
+  date            DateTime?
+  year            String?
+  description     String?       @db.Text
+  category        String?
+  verificationUrl String?
+  imageUrl        String?
+  featured        Boolean       @default(false)
+  displayOrder    Int           @default(0)
+  publishStatus   PublishStatus @default(PUBLISHED)
+
+  certificates    Certificate[]
+
+  updatedAt       DateTime @updatedAt
+  createdAt       DateTime @default(now())
+}
+
+// ──────────────────────────────────────────────
+// CERTIFICATES
+// ──────────────────────────────────────────────
+
+model Certificate {
+  id              String        @id @default(cuid())
+  name            String
+  organization    String
+  issueDate       DateTime?
+  credentialId    String?
+  verificationUrl String?
+  fileUrl         String?       // PDF or image in Vercel Blob
+  thumbnailUrl    String?
+  description     String?       @db.Text
+  category        String?
+  featured        Boolean       @default(false)
+  isPublic        Boolean       @default(true)
+  displayOrder    Int           @default(0)
+  publishStatus   PublishStatus @default(PUBLISHED)
+
+  achievementId   String?
+  achievement     Achievement?  @relation(fields: [achievementId], references: [id], onDelete: SetNull)
+
+  updatedAt       DateTime @updatedAt
+  createdAt       DateTime @default(now())
+}
+
+// ──────────────────────────────────────────────
+// SKILLS
+// ──────────────────────────────────────────────
+
+model SkillCategory {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  displayOrder Int     @default(0)
+  skills      Skill[]
+  updatedAt   DateTime @updatedAt
+  createdAt   DateTime @default(now())
+}
+
+model Skill {
+  id          String        @id @default(cuid())
+  name        String
+  categoryId  String
+  iconName    String?
+  level       SkillLevel?
+  featured    Boolean       @default(false)
+  displayOrder Int          @default(0)
+  publishStatus PublishStatus @default(PUBLISHED)
+
+  category    SkillCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  updatedAt   DateTime @updatedAt
+  createdAt   DateTime @default(now())
+}
+
+enum SkillLevel {
+  BEGINNER
+  INTERMEDIATE
+  ADVANCED
+  EXPERT
+}
+
+// ──────────────────────────────────────────────
+// LEADERSHIP
+// ──────────────────────────────────────────────
+
+model Leadership {
+  id           String        @id @default(cuid())
+  position     String
+  organization String
+  logoUrl      String?
+  website      String?
+  description  String?       @db.Text
+  startDate    DateTime?
+  endDate      DateTime?
+  isCurrent    Boolean       @default(false)
+  achievements String[]
+  imageUrls    String[]
+  featured     Boolean       @default(false)
+  displayOrder Int           @default(0)
+  publishStatus PublishStatus @default(PUBLISHED)
+
+  updatedAt    DateTime @updatedAt
+  createdAt    DateTime @default(now())
+}
+
+// ──────────────────────────────────────────────
+// WORKSHOPS / SPEAKING
+// ──────────────────────────────────────────────
+
+model Workshop {
+  id           String        @id @default(cuid())
+  eventName    String
+  organization String?
+  role         String?
+  date         DateTime?
+  location     String?
+  audienceSize Int?
+  description  String?       @db.Text
+  topics       String[]
+  imageUrls    String[]
+  articleUrl   String?
+  eventUrl     String?
+  featured     Boolean       @default(false)
+  displayOrder Int           @default(0)
+  publishStatus PublishStatus @default(PUBLISHED)
+
+  updatedAt    DateTime @updatedAt
+  createdAt    DateTime @default(now())
+}
+
+// ──────────────────────────────────────────────
+// BLOG
+// ──────────────────────────────────────────────
+
+model BlogPost {
+  id            String        @id @default(cuid())
+  title         String
+  slug          String        @unique
+  subtitle      String?
+  content       String        @db.Text  // Tiptap JSON or HTML
+  coverImageUrl String?
+  authorId      String?
+  publishStatus PublishStatus @default(DRAFT)
+  featured      Boolean       @default(false)
+  scheduledAt   DateTime?
+  publishedAt   DateTime?
+  readingTimeMin Int?
+  seoTitle      String?
+  seoDescription String?      @db.Text
+  ogImageUrl    String?
+
+  categories    BlogCategory[]
+  tags          BlogTag[]
+  versions      ContentVersion[] @relation("BlogVersions")
+
+  updatedAt     DateTime @updatedAt
+  createdAt     DateTime @default(now())
+}
+
+model BlogCategory {
+  id    String     @id @default(cuid())
+  name  String     @unique
+  slug  String     @unique
+  posts BlogPost[]
+}
+
+model BlogTag {
+  id    String     @id @default(cuid())
+  name  String     @unique
+  slug  String     @unique
+  posts BlogPost[]
+}
+
+// ──────────────────────────────────────────────
+// MEDIA
+// ──────────────────────────────────────────────
+
+model Media {
+  id           String    @id @default(cuid())
+  filename     String
+  originalName String
+  url          String    // Vercel Blob URL (production) or /public/uploads/ (dev)
+  mimeType     String
+  size         Int       // bytes
+  width        Int?
+  height       Int?
+  alt          String?
+  caption      String?
+  category     String?
+  tags         String[]
+
+  updatedAt    DateTime @updatedAt
+  createdAt    DateTime @default(now())
+}
+
+// ──────────────────────────────────────────────
+// GALLERY
+// ──────────────────────────────────────────────
+
+model GalleryItem {
+  id           String        @id @default(cuid())
+  mediaId      String?
+  imageUrl     String
+  caption      String?
+  description  String?       @db.Text
+  date         DateTime?
+  location     String?
+  category     String?
+  tags         String[]
+  featured     Boolean       @default(false)
+  displayOrder Int           @default(0)
+  publishStatus PublishStatus @default(PUBLISHED)
+
+  updatedAt    DateTime @updatedAt
+  createdAt    DateTime @default(now())
+}
+
+// ──────────────────────────────────────────────
+// TESTIMONIALS
+// ──────────────────────────────────────────────
+
+model Testimonial {
+  id           String        @id @default(cuid())
+  personName   String
+  role         String?
+  organization String?
+  avatarUrl    String?
+  content      String        @db.Text
+  linkedinUrl  String?
+  website      String?
+  featured     Boolean       @default(false)
+  displayOrder Int           @default(0)
+  publishStatus PublishStatus @default(PUBLISHED)
+
+  updatedAt    DateTime @updatedAt
+  createdAt    DateTime @default(now())
+}
+
+// ──────────────────────────────────────────────
+// SOCIAL LINKS
+// ──────────────────────────────────────────────
+
+model SocialLink {
+  id           String   @id @default(cuid())
+  platform     String   // "github", "linkedin", "email", "x", "instagram", etc.
+  url          String
+  label        String
+  icon         String?
+  enabled      Boolean  @default(true)
+  displayOrder Int      @default(0)
+
+  updatedAt    DateTime @updatedAt
+  createdAt    DateTime @default(now())
+}
+
+// ──────────────────────────────────────────────
+// RESUME
+// ──────────────────────────────────────────────
+
+model Resume {
+  id           String        @id @default(cuid())
+  name         String
+  fileUrl      String        // Vercel Blob URL
+  version      String?
+  resumeDate   DateTime?
+  isActive     Boolean       @default(false)
+  description  String?
+  category     ResumeCategory @default(GENERAL)
+
+  updatedAt    DateTime @updatedAt
+  createdAt    DateTime @default(now())
+}
+
+enum ResumeCategory {
+  GENERAL
+  AI
+  SOFTWARE_ENGINEERING
+  BLOCKCHAIN
+  OTHER
+}
+
+// ──────────────────────────────────────────────
+// CONTACT MESSAGES
+// ──────────────────────────────────────────────
+
+model ContactMessage {
+  id         String        @id @default(cuid())
+  senderName String?
+  email      String
+  subject    String?
+  message    String        @db.Text
+  isRead     Boolean       @default(false)
+  isArchived Boolean       @default(false)
+  ipAddress  String?
+
+  createdAt  DateTime @default(now())
+}
+
+// ──────────────────────────────────────────────
+// AUDIT + VERSIONING
+// ──────────────────────────────────────────────
+
+model AuditLog {
+  id           String   @id @default(cuid())
+  userId       String?
+  action       String   // "created", "updated", "deleted", "published", "login", etc.
+  entityType   String   // "Project", "Achievement", etc.
+  entityId     String?
+  entityTitle  String?
+  metadata     Json?
+  ipAddress    String?
+
+  user         User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  project      Project? @relation("ProjectAuditLogs", fields: [entityId], references: [id], onDelete: SetNull, map: "audit_project_fk")
+
+  createdAt    DateTime @default(now())
+}
+
+model ContentVersion {
+  id          String   @id @default(cuid())
+  userId      String?
+  entityType  String
+  entityId    String
+  entityTitle String?
+  snapshot    Json     // Full JSON snapshot of the record at that point
+  changeNote  String?
+
+  user        User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  // Optional direct relations for quick lookup
+  project     Project? @relation("ProjectVersions", fields: [entityId], references: [id], onDelete: Cascade, map: "version_project_fk")
+  blogPost    BlogPost? @relation("BlogVersions", fields: [entityId], references: [id], onDelete: Cascade, map: "version_blog_fk")
+
+  createdAt   DateTime @default(now())
+}
+
+// ──────────────────────────────────────────────
+// SHARED ENUMS
+// ──────────────────────────────────────────────
+
+enum PublishStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+enum ProjectStatus {
+  IDEA
+  IN_DEVELOPMENT
+  ACTIVE
+  COMPLETED
+  ARCHIVED
+}
