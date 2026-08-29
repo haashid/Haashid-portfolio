@@ -12,8 +12,8 @@ const profileSchema = z.object({
   location: z.string().max(200).optional(),
   email: z.string().email().or(z.literal("")).optional(),
   phone: z.string().max(50).optional().nullable(),
-  website: z.string().url().or(z.literal("")).optional().nullable(),
-  avatarUrl: z.string().url().or(z.literal("")).optional().nullable(),
+  website: z.string().optional().nullable(),
+  avatarUrl: z.string().optional().nullable(),
   avatarAlt: z.string().max(200).optional().nullable(),
   availabilityStatus: z.enum([
     "OPEN_TO_WORK", "OPEN_TO_INTERNSHIPS", "OPEN_TO_FULL_TIME",
@@ -27,7 +27,7 @@ const profileSchema = z.object({
   hybridOk: z.boolean().optional(),
   onSiteOk: z.boolean().optional(),
   ctaText: z.string().max(100).optional().nullable(),
-  ctaUrl: z.string().url().or(z.literal("")).optional().nullable(),
+  ctaUrl: z.string().optional().nullable(),
 });
 
 export async function GET() {
