@@ -4,8 +4,8 @@ import { Plus, Image as ImageIcon } from "lucide-react";
 
 export default async function GalleryAdminPage() {
   const items = await db.galleryItem.findMany({
-    orderBy: { displayOrder: "asc" },
-  });
+      orderBy: { displayOrder: "asc" },
+    });
 
   return (
     <div>

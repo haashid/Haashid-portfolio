@@ -23,18 +23,43 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
         const { email, password } = parsed.data;
 
-        const user = await db.user.findUnique({ where: { email } });
-        if (!user) return null;
+        // 1. Check against environment admin credentials
+        const envEmail = process.env.ADMIN_EMAIL;
+        const envPassword = process.env.ADMIN_PASSWORD;
 
-        const valid = await compare(password, user.passwordHash);
-        if (!valid) return null;
+        if (
+          envEmail &&
+          envPassword &&
+          email.trim().toLowerCase() === envEmail.trim().toLowerCase() &&
+          password.trim() === envPassword.trim()
+        ) {
+          return {
+            id: "admin-master",
+            email: envEmail,
+            name: "Muhammad Haashid",
+            role: "ADMIN",
+          };
+        }
 
-        return {
-          id: user.id,
-          email: user.email,
-          name: user.name,
-          role: user.role,
-        };
+        // 2. Check against database if available
+        try {
+          const user = await db.user.findUnique({ where: { email } });
+          if (user) {
+            const valid = await compare(password, user.passwordHash);
+            if (valid) {
+              return {
+                id: user.id,
+                email: user.email,
+                name: user.name,
+                role: user.role,
+              };
+            }
+          }
+        } catch (error) {
+          console.warn("[auth] Database check failed during authorization:", error);
+        }
+
+        return null;
       },
     }),
   ],

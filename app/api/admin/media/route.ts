@@ -1,6 +1,7 @@
 import { requireAdminAuth, apiSuccess, apiError, ALLOWED_IMAGE_TYPES, ALLOWED_DOCUMENT_TYPES, MAX_DOCUMENT_SIZE } from "@/lib/api-utils";
 import { logAudit } from "@/lib/services/audit";
 import { db } from "@/lib/db";
+import { revalidatePath } from "next/cache";
 import { NextRequest } from "next/server";
 import { writeFile, mkdir } from "fs/promises";
 import { join } from "path";
@@ -9,6 +10,10 @@ import { existsSync } from "fs";
 export async function POST(req: NextRequest) {
   const { error } = await requireAdminAuth();
   if (error) return error;
+
+  if (process.env.NODE_ENV === "production" && !process.env.BLOB_READ_WRITE_TOKEN) {
+    return apiError("Media storage is not configured. Configure durable storage before uploading files.", 503);
+  }
 
   const formData = await req.formData();
   const file = formData.get("file") as File | null;
@@ -62,6 +67,7 @@ export async function POST(req: NextRequest) {
   });
 
   await logAudit({ action: "uploaded", entityType: "Media", entityId: media.id, entityTitle: media.originalName });
+  revalidatePath("/");
 
   return apiSuccess(media, 201);
 }

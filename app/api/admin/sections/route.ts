@@ -1,6 +1,7 @@
 import { db } from "@/lib/db";
 import { requireAdminAuth, apiSuccess, apiError } from "@/lib/api-utils";
 import { logAudit } from "@/lib/services/audit";
+import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { NextRequest } from "next/server";
 
@@ -40,5 +41,6 @@ export async function PUT(req: NextRequest) {
   );
 
   await logAudit({ action: "updated", entityType: "SectionConfig", entityTitle: "Section layout" });
+  revalidatePath("/");
   return apiSuccess(results);
 }

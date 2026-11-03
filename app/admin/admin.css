@@ -1304,3 +1304,11 @@
 }
 
 .admin-skill-tag { padding: 5px 12px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); border-radius: 999px; font-size: 0.82rem; color: #a1a1aa; cursor: pointer; transition: all 140ms ease; display: inline-block; } .admin-skill-tag:hover { border-color: #38bdf8; color: #38bdf8; }
+
+.admin-skill-list { display: grid; gap: 8px; }
+.admin-skill-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 12px; border: 1px solid rgba(255,255,255,.08); border-radius: 8px; }
+.admin-skill-row > span { display: flex; align-items: baseline; gap: 10px; }
+.admin-skill-row small { color: #8a8a94; text-transform: capitalize; }
+.admin-form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin: 16px 0; }
+.admin-form-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 18px; }
+@media (max-width: 640px) { .admin-form-grid { grid-template-columns: 1fr; } }

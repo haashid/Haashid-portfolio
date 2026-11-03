@@ -51,6 +51,18 @@ async function main() {
     console.log("⏭  Profile already exists, skipping");
   }
 
+  const existingHero = await db.heroContent.findFirst();
+  if (!existingHero) {
+    await db.heroContent.create({
+      data: {
+        heading: "I build systems that solve real problems.",
+        subtitle: "",
+        description: "Engineering student, builder, and technical leader focused on turning ambitious ideas into working systems.",
+        published: true,
+      },
+    });
+  }
+
   // ═══════════════════════════════════════════════════════
   // SOCIAL LINKS
   // ═══════════════════════════════════════════════════════
@@ -60,10 +72,10 @@ async function main() {
     { platform: "email",    label: "Email",    url: `mailto:${process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? ""}`, icon: "Mail", displayOrder: 2 },
   ];
 
-  await db.socialLink.deleteMany();
-  await db.socialLink.createMany({
-    data: socialLinks.map(link => ({ ...link, enabled: true })),
-  });
+  for (const link of socialLinks) {
+    const existingLink = await db.socialLink.findFirst({ where: { platform: link.platform } });
+    if (!existingLink) await db.socialLink.create({ data: { ...link, enabled: true } });
+  }
   console.log("✅ Social links seeded");
 
   // ═══════════════════════════════════════════════════════
@@ -83,6 +95,7 @@ async function main() {
       publishStatus: "PUBLISHED" as const,
       featured: true,
       githubUrl: "https://github.com/haashid/ORION",
+      coverImageUrl: "/projects/orion.jpg",
       accentColor: "blue",
       displayOrder: 0,
     },
@@ -99,6 +112,7 @@ async function main() {
       publishStatus: "PUBLISHED" as const,
       featured: true,
       githubUrl: "https://github.com/haashid/hacktofuture4-I03",
+      coverImageUrl: "/projects/neuromesh.jpg",
       award: "National Runner-Up — HackToFuture 4.0",
       accentColor: "green",
       displayOrder: 1,
@@ -116,6 +130,7 @@ async function main() {
       publishStatus: "PUBLISHED" as const,
       featured: true,
       githubUrl: "https://github.com/haashid/trueHire-Ai-",
+      coverImageUrl: "/projects/truehire.jpg",
       award: "Grand Champion — hackathon-winning project",
       accentColor: "indigo",
       displayOrder: 2,
@@ -134,6 +149,7 @@ async function main() {
       featured: true,
       githubUrl: "https://github.com/haashid/weilchain-nexus",
       demoUrl: "https://weilchainnexus.vercel.app",
+      coverImageUrl: "/projects/weilchain-nexus.jpg",
       award: "2nd Runner-Up — East India Blockchain Summit 2.0, IIT Kharagpur",
       accentColor: "orange",
       displayOrder: 3,
@@ -150,6 +166,7 @@ async function main() {
       publishStatus: "PUBLISHED" as const,
       featured: false,
       githubUrl: "https://github.com/haashid/real-time-heart-health-monitoring-system",
+      coverImageUrl: "/projects/heart-health-monitor.jpg",
       accentColor: "red",
       displayOrder: 4,
     },
@@ -165,6 +182,7 @@ async function main() {
       publishStatus: "PUBLISHED" as const,
       featured: false,
       githubUrl: "https://github.com/haashid/AuditOS",
+      coverImageUrl: "/projects/auditos.jpg",
       accentColor: "slate",
       displayOrder: 5,
     },
@@ -180,6 +198,7 @@ async function main() {
       publishStatus: "PUBLISHED" as const,
       featured: false,
       githubUrl: "https://github.com/haashid/ICSB-WEBSITE",
+      coverImageUrl: "/projects/icsb-website.jpg",
       accentColor: "cyan",
       displayOrder: 6,
     },
@@ -191,7 +210,11 @@ async function main() {
       await db.project.create({ data: proj });
       console.log(`  ✅ Project: ${proj.title}`);
     } else {
-      console.log(`  ⏭  Project already exists: ${proj.title}`);
+      await db.project.update({
+        where: { slug: proj.slug },
+        data: { coverImageUrl: proj.coverImageUrl },
+      });
+      console.log(`  🔄 Project updated with cover image: ${proj.title}`);
     }
   }
 

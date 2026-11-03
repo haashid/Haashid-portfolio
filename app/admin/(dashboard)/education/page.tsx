@@ -4,8 +4,8 @@ import { Plus, GraduationCap } from "lucide-react";
 
 export default async function EducationAdminPage() {
   const education = await db.education.findMany({
-    orderBy: [{ displayOrder: "asc" }, { startDate: "desc" }],
-  });
+      orderBy: [{ displayOrder: "asc" }, { startDate: "desc" }],
+    });
 
   return (
     <div>

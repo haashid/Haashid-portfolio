@@ -1,6 +1,7 @@
 import { db } from "@/lib/db";
 import { requireAdminAuth, apiSuccess, apiError } from "@/lib/api-utils";
 import { logAudit } from "@/lib/services/audit";
+import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { NextRequest } from "next/server";
 
@@ -30,12 +31,18 @@ const profileSchema = z.object({
   ctaUrl: z.string().optional().nullable(),
 });
 
+import { getProfile } from "@/lib/public-data";
+
 export async function GET() {
   const { error } = await requireAdminAuth();
   if (error) return error;
 
-  const profile = await db.profile.findFirst();
-  return apiSuccess(profile ?? {});
+  try {
+    const profile = await db.profile.findFirst();
+    return apiSuccess(profile ?? (await getProfile()));
+  } catch {
+    return apiSuccess(await getProfile());
+  }
 }
 
 export async function PATCH(req: NextRequest) {
@@ -58,5 +65,6 @@ export async function PATCH(req: NextRequest) {
     entityTitle: profile.name || "Profile",
   });
 
+  revalidatePath("/");
   return apiSuccess(profile);
 }

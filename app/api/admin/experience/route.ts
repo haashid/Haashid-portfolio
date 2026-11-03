@@ -1,6 +1,7 @@
 import { db } from "@/lib/db";
 import { requireAdminAuth, apiSuccess, apiError } from "@/lib/api-utils";
 import { logAudit } from "@/lib/services/audit";
+import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { NextRequest } from "next/server";
 
@@ -38,5 +39,6 @@ export async function POST(req: NextRequest) {
   if (!parsed.success) return apiError(parsed.error.message);
   const item = await db.experience.create({ data: parsed.data });
   await logAudit({ action: "created", entityType: "Experience", entityId: item.id, entityTitle: `${item.position} at ${item.company}` });
+  revalidatePath("/");
   return apiSuccess(item, 201);
 }

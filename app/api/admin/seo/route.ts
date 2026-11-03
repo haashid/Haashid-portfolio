@@ -1,6 +1,7 @@
 import { db } from "@/lib/db";
 import { requireAdminAuth, apiSuccess, apiError } from "@/lib/api-utils";
 import { logAudit } from "@/lib/services/audit";
+import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { NextRequest } from "next/server";
 
@@ -35,5 +36,6 @@ export async function PATCH(req: NextRequest) {
     : await db.siteSettings.create({ data: parsed.data as Parameters<typeof db.siteSettings.create>[0]["data"] });
 
   await logAudit({ action: "updated", entityType: "SiteSettings", entityId: settings.id, entityTitle: "SEO Settings" });
+  revalidatePath("/");
   return apiSuccess(settings);
 }

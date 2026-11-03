@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { Pencil, Trash2, Star, StarOff, Trophy } from "lucide-react";
+import { adminRequest } from "@/lib/admin-client";
 
 type Achievement = {
   id: string;
@@ -19,21 +20,37 @@ type Achievement = {
 export function AchievementsManager({ initialAchievements }: { initialAchievements: Achievement[] }) {
   const [items, setItems] = useState(initialAchievements);
   const [deleting, setDeleting] = useState<string | null>(null);
+  const [pending, setPending] = useState<string | null>(null);
+  const [error, setError] = useState("");
 
   async function toggleFeatured(id: string, featured: boolean) {
-    await fetch(`/api/admin/achievements/${id}`, {
-      method: "PATCH", headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ featured: !featured }),
-    });
-    setItems((a) => a.map((i) => i.id === id ? { ...i, featured: !i.featured } : i));
+    setPending(id);
+    setError("");
+    try {
+      await adminRequest(`/api/admin/achievements/${id}`, {
+        method: "PATCH", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ featured: !featured }),
+      });
+      setItems((a) => a.map((i) => i.id === id ? { ...i, featured: !featured } : i));
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Could not update the achievement.");
+    } finally {
+      setPending(null);
+    }
   }
 
   async function archive(id: string, title: string) {
     if (!confirm(`Archive "${title}"?`)) return;
     setDeleting(id);
-    await fetch(`/api/admin/achievements/${id}`, { method: "DELETE" });
-    setItems((a) => a.filter((i) => i.id !== id));
-    setDeleting(null);
+    setError("");
+    try {
+      await adminRequest(`/api/admin/achievements/${id}`, { method: "DELETE" });
+      setItems((a) => a.filter((i) => i.id !== id));
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Could not archive the achievement.");
+    } finally {
+      setDeleting(null);
+    }
   }
 
   if (items.length === 0) return (
@@ -47,6 +64,7 @@ export function AchievementsManager({ initialAchievements }: { initialAchievemen
 
   return (
     <div className="admin-table-wrap">
+      {error && <p role="alert" style={{ padding: 12, color: "#f87171" }}>{error}</p>}
       <table className="admin-table">
         <thead>
           <tr>
@@ -78,7 +96,7 @@ export function AchievementsManager({ initialAchievements }: { initialAchievemen
               </td>
               <td>
                 <div className="admin-table-actions">
-                  <button className="admin-btn-icon" title={a.featured ? "Unfeature" : "Feature"} onClick={() => toggleFeatured(a.id, a.featured)}>
+                  <button className="admin-btn-icon" title={a.featured ? "Unfeature" : "Feature"} onClick={() => toggleFeatured(a.id, a.featured)} disabled={pending === a.id || deleting === a.id}>
                     {a.featured ? <Star size={14} style={{ color: "#fbbf24" }} /> : <StarOff size={14} />}
                   </button>
                   <Link href={`/admin/achievements/${a.id}`} className="admin-btn-icon" title="Edit">

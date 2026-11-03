@@ -16,29 +16,41 @@ import {
 } from "lucide-react";
 
 async function getStats() {
-  const [projects, achievements, certificates, blogPosts, experience, media] =
-    await Promise.all([
-      db.project.count({ where: { publishStatus: "PUBLISHED" } }),
-      db.achievement.count({ where: { publishStatus: "PUBLISHED" } }),
-      db.certificate.count(),
-      db.blogPost.count({ where: { publishStatus: "PUBLISHED" } }),
-      db.experience.count({ where: { publishStatus: "PUBLISHED" } }),
-      db.media.count(),
-    ]);
+  try {
+    const [projects, achievements, certificates, blogPosts, experience, media] =
+      await Promise.all([
+        db.project.count({ where: { publishStatus: "PUBLISHED" } }),
+        db.achievement.count({ where: { publishStatus: "PUBLISHED" } }),
+        db.certificate.count(),
+        db.blogPost.count({ where: { publishStatus: "PUBLISHED" } }),
+        db.experience.count({ where: { publishStatus: "PUBLISHED" } }),
+        db.media.count(),
+      ]);
 
-  return { projects, achievements, certificates, blogPosts, experience, media };
+    return { projects, achievements, certificates, blogPosts, experience, media };
+  } catch (error) {
+    throw error;
+  }
 }
 
 async function getRecentActivity() {
-  return db.auditLog.findMany({
-    take: 8,
-    orderBy: { createdAt: "desc" },
-    include: { user: { select: { name: true } } },
-  });
+  try {
+    return await db.auditLog.findMany({
+      take: 8,
+      orderBy: { createdAt: "desc" },
+      include: { user: { select: { name: true } } },
+    });
+  } catch (error) {
+    throw error;
+  }
 }
 
 async function getProfile() {
-  return db.profile.findFirst();
+  try {
+    return await db.profile.findFirst();
+  } catch (error) {
+    throw error;
+  }
 }
 
 export default async function AdminDashboardPage() {

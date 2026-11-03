@@ -35,7 +35,7 @@ export default function SettingsAdminPage() {
     setSaving(true);
     try {
       const res = await fetch("/api/admin/seo", {
-        method: "PUT",
+        method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
       });

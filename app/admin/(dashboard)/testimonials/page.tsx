@@ -4,8 +4,8 @@ import { Plus, MessageSquareQuote } from "lucide-react";
 
 export default async function TestimonialsAdminPage() {
   const items = await db.testimonial.findMany({
-    orderBy: { displayOrder: "asc" },
-  });
+      orderBy: { displayOrder: "asc" },
+    });
 
   return (
     <div>

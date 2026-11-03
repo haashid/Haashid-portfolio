@@ -3,11 +3,17 @@ import Link from "next/link";
 import { Plus, Activity } from "lucide-react";
 
 export default async function ActivityAdminPage() {
-  const logs = await db.auditLog.findMany({
-    take: 100,
-    orderBy: { createdAt: "desc" },
-    include: { user: { select: { name: true, email: true } } },
-  });
+  let logs: any[] = [];
+  try {
+    logs = await db.auditLog.findMany({
+      take: 100,
+      orderBy: { createdAt: "desc" },
+      include: { user: { select: { name: true, email: true } } },
+    });
+  } catch (error) {
+    console.warn("[admin-activity] findMany failed, using empty array:", error);
+    logs = [];
+  }
 
   return (
     <div>

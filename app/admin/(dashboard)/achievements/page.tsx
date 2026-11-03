@@ -5,8 +5,8 @@ import Link from "next/link";
 
 export default async function AchievementsAdminPage() {
   const achievements = await db.achievement.findMany({
-    orderBy: [{ displayOrder: "asc" }, { createdAt: "desc" }],
-  });
+      orderBy: [{ displayOrder: "asc" }, { createdAt: "desc" }],
+    });
 
   return (
     <div>

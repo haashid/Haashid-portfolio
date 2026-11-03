@@ -4,8 +4,8 @@ import { Plus, BookOpen } from "lucide-react";
 
 export default async function WorkshopsAdminPage() {
   const workshops = await db.workshop.findMany({
-    orderBy: [{ displayOrder: "asc" }, { date: "desc" }],
-  });
+      orderBy: [{ displayOrder: "asc" }, { date: "desc" }],
+    });
 
   return (
     <div>

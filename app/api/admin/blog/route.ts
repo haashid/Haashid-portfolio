@@ -1,6 +1,7 @@
 import { db } from "@/lib/db";
 import { requireAdminAuth, apiSuccess, apiError } from "@/lib/api-utils";
 import { logAudit } from "@/lib/services/audit";
+import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { NextRequest } from "next/server";
 
@@ -54,5 +55,8 @@ export async function POST(req: NextRequest) {
   });
 
   await logAudit({ action: "created", entityType: "BlogPost", entityId: post.id, entityTitle: post.title });
+  revalidatePath("/");
+  revalidatePath("/blog");
+  if (post.publishStatus === "PUBLISHED") revalidatePath(`/blog/${post.slug}`);
   return apiSuccess(post, 201);
 }

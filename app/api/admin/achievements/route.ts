@@ -1,6 +1,7 @@
 import { db } from "@/lib/db";
 import { requireAdminAuth, apiSuccess, apiError } from "@/lib/api-utils";
 import { logAudit } from "@/lib/services/audit";
+import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { NextRequest } from "next/server";
 
@@ -37,5 +38,6 @@ export async function POST(req: NextRequest) {
   if (!parsed.success) return apiError(parsed.error.message);
   const achievement = await db.achievement.create({ data: parsed.data });
   await logAudit({ action: "created", entityType: "Achievement", entityId: achievement.id, entityTitle: achievement.title });
+  revalidatePath("/");
   return apiSuccess(achievement, 201);
 }

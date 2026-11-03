@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useRef } from "react";
 import { Upload, Search, Trash2, Copy, Image, Loader2, X } from "lucide-react";
+import { adminRequest } from "@/lib/admin-client";
 
 type MediaItem = {
   id: string;
@@ -28,6 +29,7 @@ export default function MediaAdminPage() {
   const [query, setQuery] = useState("");
   const [selected, setSelected] = useState<MediaItem | null>(null);
   const [toast, setToast] = useState("");
+  const [error, setError] = useState("");
   const [dragOver, setDragOver] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -35,10 +37,14 @@ export default function MediaAdminPage() {
 
   async function loadMedia(q?: string) {
     const url = `/api/admin/media${q ? `?q=${encodeURIComponent(q)}` : ""}`;
-    const res = await fetch(url);
-    const data = await res.json();
-    setMedia(data);
-    setLoading(false);
+    setError("");
+    try {
+      setMedia(await adminRequest<MediaItem[]>(url));
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Could not load media.");
+    } finally {
+      setLoading(false);
+    }
   }
 
   useEffect(() => { loadMedia(); }, []);
@@ -47,15 +53,24 @@ export default function MediaAdminPage() {
     if (!files || files.length === 0) return;
     setUploading(true);
     const uploaded: MediaItem[] = [];
-    for (const file of Array.from(files)) {
-      const fd = new FormData();
-      fd.append("file", file);
-      const res = await fetch("/api/admin/media", { method: "POST", body: fd });
-      if (res.ok) uploaded.push(await res.json());
+    const failures: string[] = [];
+    setError("");
+    try {
+      for (const file of Array.from(files)) {
+        const fd = new FormData();
+        fd.append("file", file);
+        try {
+          uploaded.push(await adminRequest<MediaItem>("/api/admin/media", { method: "POST", body: fd }));
+        } catch (err) {
+          failures.push(`${file.name}: ${err instanceof Error ? err.message : "upload failed"}`);
+        }
+      }
+      if (uploaded.length) setMedia((m) => [...uploaded, ...m]);
+      if (failures.length) setError(failures.join(" "));
+      else showToast(`${uploaded.length} file(s) uploaded.`);
+    } finally {
+      setUploading(false);
     }
-    setMedia((m) => [...uploaded, ...m]);
-    setUploading(false);
-    showToast(`${uploaded.length} file(s) uploaded.`);
   }
 
   function handleDrop(e: React.DragEvent) {
@@ -71,9 +86,14 @@ export default function MediaAdminPage() {
 
   async function deleteMedia(id: string) {
     if (!confirm("Delete this file? This cannot be undone.")) return;
-    await fetch(`/api/admin/media/${id}`, { method: "DELETE" });
-    setMedia((m) => m.filter((item) => item.id !== id));
-    if (selected?.id === id) setSelected(null);
+    setError("");
+    try {
+      await adminRequest(`/api/admin/media/${id}`, { method: "DELETE" });
+      setMedia((m) => m.filter((item) => item.id !== id));
+      if (selected?.id === id) setSelected(null);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Could not delete this file.");
+    }
   }
 
   const filtered = media.filter((m) =>
@@ -84,6 +104,7 @@ export default function MediaAdminPage() {
 
   return (
     <div style={{ display: "flex", gap: 20, height: "calc(100vh - 140px)", overflow: "hidden" }}>
+      {error && <p role="alert" style={{ position: "absolute", zIndex: 2, top: 88, right: 24, maxWidth: 420, color: "#f87171" }}>{error}</p>}
       {/* Main panel */}
       <div style={{ flex: 1, display: "flex", flexDirection: "column", overflow: "hidden" }}>
         {/* Header */}

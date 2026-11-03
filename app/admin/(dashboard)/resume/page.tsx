@@ -3,6 +3,7 @@
 import { useEffect, useState, useCallback, useRef } from "react";
 import { Save, Loader2, FileText, Upload, Trash2, Copy } from "lucide-react";
 import Link from "next/link";
+import { adminRequest } from "@/lib/admin-client";
 
 export default function ResumeAdminPage() {
   const [resumeUrl, setResumeUrl] = useState<string>("");
@@ -14,8 +15,7 @@ export default function ResumeAdminPage() {
   const showToast = useCallback((msg: string) => { setToast(msg); setTimeout(() => setToast(""), 3500); }, []);
 
   useEffect(() => {
-    fetch("/api/admin/resume")
-      .then((r) => r.json())
+    adminRequest<{ url: string | null }>("/api/admin/resume")
       .then((d) => {
         if (d && d.url) setResumeUrl(d.url);
         setLoading(false);
@@ -35,20 +35,16 @@ export default function ResumeAdminPage() {
     const fd = new FormData();
     fd.append("file", file);
     try {
-      const res = await fetch("/api/admin/media", { method: "POST", body: fd });
-      if (!res.ok) throw new Error();
-      const data = await res.json();
+      const data = await adminRequest<{ url: string }>("/api/admin/media", { method: "POST", body: fd });
       
-      const updateRes = await fetch("/api/admin/resume", {
+      await adminRequest("/api/admin/resume", {
         method: "PUT", headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ url: data.url }),
       });
-      if (updateRes.ok) {
-        setResumeUrl(data.url);
-        showToast("Resume updated successfully!");
-      }
-    } catch {
-      showToast("Upload failed.");
+      setResumeUrl(data.url);
+      showToast("Resume updated successfully!");
+    } catch (err) {
+      showToast(err instanceof Error ? err.message : "Upload failed.");
     } finally {
       setUploading(false);
     }

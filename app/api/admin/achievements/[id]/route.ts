@@ -1,6 +1,7 @@
 import { db } from "@/lib/db";
 import { requireAdminAuth, apiSuccess, apiError } from "@/lib/api-utils";
 import { logAudit } from "@/lib/services/audit";
+import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { NextRequest } from "next/server";
 
@@ -37,6 +38,7 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
   if (!parsed.success) return apiError(parsed.error.message);
   const updated = await db.achievement.update({ where: { id }, data: parsed.data, include: { certificates: true } });
   await logAudit({ action: "updated", entityType: "Achievement", entityId: id, entityTitle: updated.title });
+  revalidatePath("/");
   return apiSuccess(updated);
 }
 
@@ -48,5 +50,6 @@ export async function DELETE(_req: NextRequest, { params }: { params: Promise<{ 
   if (!existing) return apiError("Not found", 404);
   const archived = await db.achievement.update({ where: { id }, data: { publishStatus: "ARCHIVED" } });
   await logAudit({ action: "archived", entityType: "Achievement", entityId: id, entityTitle: existing.title });
+  revalidatePath("/");
   return apiSuccess(archived);
 }

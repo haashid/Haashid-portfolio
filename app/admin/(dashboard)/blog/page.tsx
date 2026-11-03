@@ -5,9 +5,9 @@ import { BlogList } from "./_components/blog-list";
 
 export default async function BlogAdminPage() {
   const posts = await db.blogPost.findMany({
-    orderBy: { createdAt: "desc" },
-    include: { categories: true, tags: true },
-  });
+      orderBy: { createdAt: "desc" },
+      include: { categories: true, tags: true },
+    });
 
   return (
     <div>

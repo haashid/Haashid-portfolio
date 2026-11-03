@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Pencil, Eye, Globe, Github, Trash2, Star, StarOff } from "lucide-react";
+import { adminRequest } from "@/lib/admin-client";
 
 type Project = {
   id: string;
@@ -30,38 +31,65 @@ function StatusBadge({ status }: { status: string }) {
 export function ProjectsTable({ initialProjects }: { initialProjects: Project[] }) {
   const [projects, setProjects] = useState(initialProjects);
   const [deleting, setDeleting] = useState<string | null>(null);
+  const [pending, setPending] = useState<string | null>(null);
+  const [error, setError] = useState("");
   const router = useRouter();
 
   async function toggleFeatured(id: string, featured: boolean) {
-    await fetch(`/api/admin/projects/${id}`, {
+    setPending(id);
+    setError("");
+    try {
+      await adminRequest(`/api/admin/projects/${id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ featured: !featured }),
-    });
-    setProjects((p) => p.map((pr) => pr.id === id ? { ...pr, featured: !pr.featured } : pr));
+      });
+      setProjects((p) => p.map((pr) => pr.id === id ? { ...pr, featured: !featured } : pr));
+      router.refresh();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Could not update the project.");
+    } finally {
+      setPending(null);
+    }
   }
 
   async function archive(id: string) {
     if (!confirm("Archive this project? It will be hidden from the public site.")) return;
     setDeleting(id);
-    await fetch(`/api/admin/projects/${id}`, { method: "DELETE" });
-    setProjects((p) => p.filter((pr) => pr.id !== id));
-    setDeleting(null);
-    router.refresh();
+    setError("");
+    try {
+      await adminRequest(`/api/admin/projects/${id}`, { method: "DELETE" });
+      setProjects((p) => p.filter((pr) => pr.id !== id));
+      router.refresh();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Could not archive the project.");
+    } finally {
+      setDeleting(null);
+    }
   }
 
   async function publish(id: string, current: string) {
     const newStatus = current === "PUBLISHED" ? "DRAFT" : "PUBLISHED";
-    await fetch(`/api/admin/projects/${id}`, {
+    setPending(id);
+    setError("");
+    try {
+      await adminRequest(`/api/admin/projects/${id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ publishStatus: newStatus }),
-    });
-    setProjects((p) => p.map((pr) => pr.id === id ? { ...pr, publishStatus: newStatus } : pr));
+      });
+      setProjects((p) => p.map((pr) => pr.id === id ? { ...pr, publishStatus: newStatus } : pr));
+      router.refresh();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Could not update publication status.");
+    } finally {
+      setPending(null);
+    }
   }
 
   return (
     <div className="admin-table-wrap">
+      {error && <p role="alert" style={{ padding: 12, color: "#f87171" }}>{error}</p>}
       <table className="admin-table">
         <thead>
           <tr>
@@ -106,6 +134,7 @@ export function ProjectsTable({ initialProjects }: { initialProjects: Project[] 
                     className="admin-btn-icon"
                     title={p.featured ? "Unfeature" : "Feature"}
                     onClick={() => toggleFeatured(p.id, p.featured)}
+                    disabled={pending === p.id || deleting === p.id}
                   >
                     {p.featured ? <Star size={14} style={{ color: "#fbbf24" }} /> : <StarOff size={14} />}
                   </button>
@@ -113,6 +142,7 @@ export function ProjectsTable({ initialProjects }: { initialProjects: Project[] 
                     className="admin-btn-icon"
                     title={p.publishStatus === "PUBLISHED" ? "Unpublish" : "Publish"}
                     onClick={() => publish(p.id, p.publishStatus)}
+                    disabled={pending === p.id || deleting === p.id}
                     style={{ color: p.publishStatus === "PUBLISHED" ? "#4ade80" : "#71717a" }}
                   >
                     <Eye size={14} />

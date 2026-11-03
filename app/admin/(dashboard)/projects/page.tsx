@@ -5,9 +5,9 @@ import { ProjectsTable } from "./_components/projects-table";
 
 export default async function ProjectsAdminPage() {
   const projects = await db.project.findMany({
-    orderBy: [{ displayOrder: "asc" }, { createdAt: "desc" }],
-    include: { images: { take: 1 } },
-  });
+      orderBy: [{ displayOrder: "asc" }, { createdAt: "desc" }],
+      include: { images: { take: 1 } },
+    });
 
   return (
     <div>

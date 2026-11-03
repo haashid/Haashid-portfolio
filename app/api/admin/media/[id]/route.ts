@@ -1,6 +1,7 @@
 import { db } from "@/lib/db";
 import { requireAdminAuth, apiSuccess, apiError } from "@/lib/api-utils";
 import { logAudit } from "@/lib/services/audit";
+import { revalidatePath } from "next/cache";
 import { NextRequest } from "next/server";
 
 export async function DELETE(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
@@ -23,6 +24,7 @@ export async function DELETE(_req: NextRequest, { params }: { params: Promise<{ 
 
   await db.media.delete({ where: { id } });
   await logAudit({ action: "deleted", entityType: "Media", entityId: id, entityTitle: media.originalName });
+  revalidatePath("/");
   return apiSuccess({ ok: true });
 }
 

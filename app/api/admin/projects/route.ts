@@ -1,6 +1,7 @@
 import { db } from "@/lib/db";
 import { requireAdminAuth, apiSuccess, apiError, slugify } from "@/lib/api-utils";
 import { logAudit, createVersion } from "@/lib/services/audit";
+import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { NextRequest } from "next/server";
 
@@ -70,5 +71,8 @@ export async function POST(req: NextRequest) {
   await logAudit({ action: "created", entityType: "Project", entityId: project.id, entityTitle: project.title });
   await createVersion("Project", project.id, project.title, project as unknown as Record<string, unknown>, "Initial creation");
 
+  revalidatePath("/");
+  revalidatePath("/projects");
+  if (project.publishStatus === "PUBLISHED") revalidatePath(`/projects/${project.slug}`);
   return apiSuccess(project, 201);
 }

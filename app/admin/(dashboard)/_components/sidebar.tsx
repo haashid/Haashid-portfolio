@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 import {
   LayoutDashboard,
+  PanelTop,
   User,
   FolderKanban,
   Trophy,
@@ -40,6 +41,7 @@ const navItems = [
     label: "Content",
     items: [
       { href: "/admin/profile", label: "Profile", icon: User },
+      { href: "/admin/hero", label: "Hero", icon: PanelTop },
       { href: "/admin/projects", label: "Projects", icon: FolderKanban },
       { href: "/admin/experience", label: "Experience", icon: Briefcase },
       { href: "/admin/education", label: "Education", icon: GraduationCap },

@@ -1,6 +1,12 @@
 import type { Metadata } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
+import { getActiveTheme, getSiteSettings } from "@/lib/public-data";
+import { getThemeMarkup } from "@/lib/theme-tokens";
 import "./globals.css";
+
+// Public metadata and the active theme are read from Prisma at request time.
+// Avoid baking CMS state into the build output.
+export const dynamic = "force-dynamic";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -14,48 +20,59 @@ const mono = JetBrains_Mono({
   display: "swap"
 });
 
-const description =
+const defaultDescription =
   "Muhammad Haashid is an engineering student, technical builder, hackathon winner, and community leader working across AI, blockchain, IoT, cybersecurity, and full-stack systems.";
 
-export const metadata: Metadata = {
-  metadataBase: new URL("https://example.com"),
-  title: "Muhammad Haashid - AI, Blockchain & IoT Engineer",
-  description,
-  alternates: {
-    canonical: "/"
-  },
-  openGraph: {
-    title: "Muhammad Haashid - AI, Blockchain & IoT Engineer",
-    description,
-    url: "/",
-    siteName: "Muhammad Haashid Portfolio",
-    images: [
-      {
-        url: "/og-image.svg",
-        width: 1200,
-        height: 630,
-        alt: "Muhammad Haashid portfolio social preview"
-      }
-    ],
-    locale: "en_US",
-    type: "website"
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Muhammad Haashid - AI, Blockchain & IoT Engineer",
-    description,
-    images: ["/og-image.svg"]
-  },
-  icons: {
-    icon: "/favicon.svg"
-  }
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const settings = await getSiteSettings();
+  const title = settings?.siteTitle || "Muhammad Haashid - AI, Blockchain & IoT Engineer";
+  const description = settings?.metaDescription || defaultDescription;
+  const ogTitle = settings?.ogTitle || title;
+  const ogDescription = settings?.ogDescription || description;
+  const ogImage = settings?.ogImageUrl || "/og-image.svg";
 
-export default function RootLayout({
+  return {
+    metadataBase: new URL(settings?.canonicalUrl || "https://example.com"),
+    title,
+    description,
+    alternates: {
+      canonical: "/"
+    },
+    openGraph: {
+      title: ogTitle,
+      description: ogDescription,
+      url: "/",
+      siteName: title,
+      images: [
+        {
+          url: ogImage,
+          width: 1200,
+          height: 630,
+          alt: `${title} social preview`
+        }
+      ],
+      locale: "en_US",
+      type: "website"
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: ogTitle,
+      description: ogDescription,
+      images: [ogImage]
+    },
+    icons: {
+      icon: settings?.faviconUrl || "/favicon.svg"
+    }
+  };
+}
+
+export default async function RootLayout({
   children
 }: Readonly<{ children: React.ReactNode }>) {
+  const themeMarkup = getThemeMarkup(await getActiveTheme());
   return (
-    <html lang="en" className={`${inter.variable} ${mono.variable}`}>
+    <html lang="en" className={`${inter.variable} ${mono.variable}`} data-theme={themeMarkup.colorScheme} data-animations={themeMarkup.animations ? "true" : "false"}>
+      <head><style dangerouslySetInnerHTML={{ __html: themeMarkup.css }} /></head>
       <body>{children}</body>
     </html>
   );

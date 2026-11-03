@@ -4,8 +4,8 @@ import { Plus, Briefcase } from "lucide-react";
 
 export default async function ExperienceAdminPage() {
   const experience = await db.experience.findMany({
-    orderBy: [{ displayOrder: "asc" }, { startDate: "desc" }],
-  });
+      orderBy: [{ displayOrder: "asc" }, { startDate: "desc" }],
+    });
 
   return (
     <div>

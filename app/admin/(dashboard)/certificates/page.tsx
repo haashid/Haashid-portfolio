@@ -4,8 +4,8 @@ import { Plus, Award } from "lucide-react";
 
 export default async function CertificatesAdminPage() {
   const items = await db.certificate.findMany({
-    orderBy: [{ displayOrder: "asc" }, { issueDate: "desc" }],
-  });
+      orderBy: [{ displayOrder: "asc" }, { issueDate: "desc" }],
+    });
 
   return (
     <div>

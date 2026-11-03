@@ -36,7 +36,7 @@ const PRESET_LABELS: Record<string, string> = {
   DARK: "Dark", LIGHT: "Light", MIDNIGHT: "Midnight", OCEAN: "Ocean", PURPLE: "Purple",
 };
 
-const FONTS = ["Inter", "Outfit", "Roboto", "Space Grotesk", "Plus Jakarta Sans", "Sora", "Geist"];
+const FONTS = ["Inter", "JetBrains Mono"];
 const TABS = ["Colors", "Typography", "Layout", "Effects"] as const;
 type Tab = typeof TABS[number];
 
@@ -294,7 +294,9 @@ export default function ThemeAdminPage() {
                 </div>
                 <div className="admin-field">
                   <label>Monospace Font</label>
-                  <input className="admin-input" value={theme.fontMono} onChange={(e) => update("fontMono", e.target.value)} />
+                  <select className="admin-select" value={theme.fontMono} onChange={(e) => update("fontMono", e.target.value)}>
+                    {FONTS.map((f) => <option key={f}>{f}</option>)}
+                  </select>
                 </div>
               </div>
             </div>

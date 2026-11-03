@@ -1,10 +1,12 @@
 import { db } from "@/lib/db";
 import { requireAdminAuth, apiSuccess, apiError } from "@/lib/api-utils";
 import { logAudit } from "@/lib/services/audit";
+import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { NextRequest } from "next/server";
 
 const schema = z.object({
+  id: z.string().optional(),
   platform: z.string().min(1).max(100),
   url: z.string().min(1).max(500),
   label: z.string().min(1).max(100),
@@ -28,19 +30,34 @@ export async function POST(req: NextRequest) {
   if (!parsed.success) return apiError(parsed.error.message);
   const link = await db.socialLink.create({ data: parsed.data });
   await logAudit({ action: "created", entityType: "SocialLink", entityId: link.id, entityTitle: link.platform });
+  revalidatePath("/");
   return apiSuccess(link, 201);
 }
 
 export async function PUT(req: NextRequest) {
-  // Bulk update for reordering
   const { error } = await requireAdminAuth();
   if (error) return error;
   const body = await req.json();
-  const items = z.array(z.object({ id: z.string(), displayOrder: z.number().int(), enabled: z.boolean() })).safeParse(body);
+  const items = z.array(schema).safeParse(body);
   if (!items.success) return apiError(items.error.message);
-  await Promise.all(items.data.map((item) =>
-    db.socialLink.update({ where: { id: item.id }, data: { displayOrder: item.displayOrder, enabled: item.enabled } })
-  ));
+
+  const links = await db.$transaction(async (tx) => {
+    const saved = [];
+    for (const { id, ...data } of items.data) {
+      if (id && !id.startsWith("new_")) {
+        saved.push(await tx.socialLink.update({ where: { id }, data }));
+      } else {
+        saved.push(await tx.socialLink.create({ data }));
+      }
+    }
+
+    await tx.socialLink.deleteMany({
+      where: saved.length ? { id: { notIn: saved.map((link) => link.id) } } : {},
+    });
+    return saved.sort((a, b) => a.displayOrder - b.displayOrder);
+  });
+
   await logAudit({ action: "updated", entityType: "SocialLink", entityTitle: "Social links reordered" });
-  return apiSuccess({ ok: true });
+  revalidatePath("/");
+  return apiSuccess(links);
 }

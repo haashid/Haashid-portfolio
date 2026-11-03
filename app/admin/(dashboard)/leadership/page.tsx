@@ -4,8 +4,8 @@ import { Plus, Users } from "lucide-react";
 
 export default async function LeadershipAdminPage() {
   const leadershipRoles = await db.leadership.findMany({
-    orderBy: [{ displayOrder: "asc" }, { startDate: "desc" }],
-  });
+      orderBy: [{ displayOrder: "asc" }, { startDate: "desc" }],
+    });
 
   return (
     <div>

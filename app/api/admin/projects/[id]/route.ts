@@ -1,6 +1,7 @@
 import { db } from "@/lib/db";
-import { requireAdminAuth, apiSuccess, apiError } from "@/lib/api-utils";
+import { requireAdminAuth, apiSuccess, apiError, slugify } from "@/lib/api-utils";
 import { logAudit, createVersion } from "@/lib/services/audit";
+import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { NextRequest } from "next/server";
 
@@ -53,12 +54,17 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
   const parsed = updateSchema.safeParse(body);
   if (!parsed.success) return apiError(parsed.error.message);
 
+  const nextSlug = parsed.data.slug ? slugify(parsed.data.slug) : existing.slug;
+  if (!nextSlug) return apiError("A non-empty slug is required.");
+  const slugOwner = await db.project.findUnique({ where: { slug: nextSlug } });
+  if (slugOwner && slugOwner.id !== id) return apiError("A project with this slug already exists.", 409);
+
   // Snapshot before update
   await createVersion("Project", id, existing.title, existing as unknown as Record<string, unknown>);
 
   const updated = await db.project.update({
     where: { id },
-    data: parsed.data,
+    data: { ...parsed.data, slug: nextSlug },
     include: { images: { orderBy: { order: "asc" } } },
   });
 
@@ -69,6 +75,10 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
     entityTitle: updated.title,
   });
 
+  revalidatePath("/");
+  revalidatePath("/projects");
+  revalidatePath(`/projects/${existing.slug}`);
+  revalidatePath(`/projects/${updated.slug}`);
   return apiSuccess(updated);
 }
 
@@ -87,5 +97,8 @@ export async function DELETE(_req: NextRequest, { params }: { params: Promise<{ 
   });
 
   await logAudit({ action: "archived", entityType: "Project", entityId: id, entityTitle: existing.title });
+  revalidatePath("/");
+  revalidatePath("/projects");
+  revalidatePath(`/projects/${existing.slug}`);
   return apiSuccess(archived);
 }

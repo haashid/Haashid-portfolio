@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useCallback } from "react";
 import { Save, Loader2, Link2, GripVertical, Plus, Trash2 } from "lucide-react";
+import { adminRequest } from "@/lib/admin-client";
 
 type SocialLink = { id: string; platform: string; label: string; url: string; icon: string; enabled: boolean; displayOrder: number };
 
@@ -11,14 +12,17 @@ export default function SocialLinksAdminPage() {
   const [saving, setSaving] = useState(false);
   const [dirty, setDirty] = useState(false);
   const [toast, setToast] = useState("");
+  const [error, setError] = useState("");
 
   const showToast = useCallback((msg: string) => { setToast(msg); setTimeout(() => setToast(""), 3500); }, []);
 
   useEffect(() => {
-    fetch("/api/admin/social-links")
-      .then((r) => r.json())
+    adminRequest<SocialLink[]>("/api/admin/social-links")
       .then((d) => { setLinks(d); setLoading(false); })
-      .catch(() => setLoading(false));
+      .catch((err: unknown) => {
+        setError(err instanceof Error ? err.message : "Could not load social links.");
+        setLoading(false);
+      });
   }, []);
 
   function update(index: number, field: keyof SocialLink, value: unknown) {
@@ -42,18 +46,18 @@ export default function SocialLinksAdminPage() {
 
   async function save() {
     setSaving(true);
+    setError("");
     try {
-      const res = await fetch("/api/admin/social-links", {
+      const saved = await adminRequest<SocialLink[]>("/api/admin/social-links", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(links.map((l, i) => ({ ...l, displayOrder: i }))),
       });
-      if (!res.ok) throw new Error();
-      setLinks(await res.json());
+      setLinks(saved);
       setDirty(false);
       showToast("Social links saved successfully.");
-    } catch {
-      showToast("Save failed.");
+    } catch (error) {
+      setError(error instanceof Error ? error.message : "Save failed.");
     } finally {
       setSaving(false);
     }
@@ -78,6 +82,8 @@ export default function SocialLinksAdminPage() {
           </button>
         </div>
       </div>
+
+      {error && <p role="alert" style={{ marginBottom: 16, color: "#f87171" }}>{error}</p>}
 
       <div className="admin-card">
         {links.length === 0 ? (
