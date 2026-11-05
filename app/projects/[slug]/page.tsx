@@ -24,15 +24,23 @@ function dateLabel(value: Date | null) {
   return value ? new Intl.DateTimeFormat("en", { month: "short", year: "numeric" }).format(value) : null;
 }
 
+interface ProjectImage {
+  id: string;
+  url: string;
+  alt?: string | null;
+}
+
 export default async function ProjectDetailPage({ params }: Props) {
   const { slug } = await params;
   const project = await getPublishedProjectBySlug(slug);
   if (!project) notFound();
 
   const coverImageUrl = project.coverImageUrl || `/projects/${project.slug}.jpg`;
-  const gallery = project.images.filter((image) => image.url !== coverImageUrl && image.url !== project.coverImageUrl);
+  const images = (project.images || []) as ProjectImage[];
+  const gallery = images.filter((image: ProjectImage) => image.url !== coverImageUrl && image.url !== project.coverImageUrl);
   const start = dateLabel(project.startDate);
   const end = dateLabel(project.endDate);
+  const technologies = (project.technologies || []) as string[];
 
   return (
     <main className="content-route case-study">
@@ -41,7 +49,7 @@ export default async function ProjectDetailPage({ params }: Props) {
         {project.category && <p className="eyebrow">{project.category}</p>}
         <h1>{project.title}</h1>
         <p className="case-study-summary">{project.shortDescription}</p>
-        <div className="content-tags">{project.technologies.map((technology) => <span key={technology}>{technology}</span>)}</div>
+        <div className="content-tags">{technologies.map((technology: string) => <span key={technology}>{technology}</span>)}</div>
         {(start || end || project.status) && <p className="content-meta">{[start, end].filter(Boolean).join(" – ")}{project.status ? ` · ${project.status.replace(/_/g, " ").toLowerCase()}` : ""}</p>}
         <div className="case-study-links">
           {project.githubUrl && <a className="button secondary" href={project.githubUrl} target="_blank" rel="noreferrer">Source repository</a>}
@@ -56,7 +64,7 @@ export default async function ProjectDetailPage({ params }: Props) {
         {project.solution && <section><h2>Solution</h2><p>{project.solution}</p></section>}
         {project.myRole && <section><h2>My role</h2><p>{project.myRole}</p></section>}
         {project.award && <section><h2>Recognition</h2><p>{project.award}</p></section>}
-        {gallery.length > 0 && <section><h2>Project media</h2><div className="content-card-grid">{gallery.map((image) => <figure key={image.id}><Image src={image.url} alt={image.alt || `${project.title} project image`} width={960} height={640} unoptimized className="content-card-image" /></figure>)}</div></section>}
+        {gallery.length > 0 && <section><h2>Project media</h2><div className="content-card-grid">{gallery.map((image: ProjectImage) => <figure key={image.id}><Image src={image.url} alt={image.alt || `${project.title} project image`} width={960} height={640} unoptimized className="content-card-image" /></figure>)}</div></section>}
       </div>
     </main>
   );
