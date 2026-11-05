@@ -3,9 +3,14 @@ import Link from "next/link";
 import { Plus, BookOpen } from "lucide-react";
 
 export default async function WorkshopsAdminPage() {
-  const workshops = await db.workshop.findMany({
+  let workshops: any[] = [];
+  try {
+    workshops = await db.workshop.findMany({
       orderBy: [{ displayOrder: "asc" }, { date: "desc" }],
     });
+  } catch (err) {
+    console.warn("[admin-workshops] DB unavailable:", err);
+  }
 
   return (
     <div>

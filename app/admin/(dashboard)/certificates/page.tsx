@@ -3,9 +3,14 @@ import Link from "next/link";
 import { Plus, Award } from "lucide-react";
 
 export default async function CertificatesAdminPage() {
-  const items = await db.certificate.findMany({
+  let items: any[] = [];
+  try {
+    items = await db.certificate.findMany({
       orderBy: [{ displayOrder: "asc" }, { issueDate: "desc" }],
     });
+  } catch (err) {
+    console.warn("[admin-certificates] DB unavailable:", err);
+  }
 
   return (
     <div>

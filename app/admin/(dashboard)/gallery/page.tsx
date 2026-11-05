@@ -3,9 +3,14 @@ import Link from "next/link";
 import { Plus, Image as ImageIcon } from "lucide-react";
 
 export default async function GalleryAdminPage() {
-  const items = await db.galleryItem.findMany({
+  let items: any[] = [];
+  try {
+    items = await db.galleryItem.findMany({
       orderBy: { displayOrder: "asc" },
     });
+  } catch (err) {
+    console.warn("[admin-gallery] DB unavailable:", err);
+  }
 
   return (
     <div>

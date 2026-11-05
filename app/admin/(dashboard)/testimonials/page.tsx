@@ -3,9 +3,14 @@ import Link from "next/link";
 import { Plus, MessageSquareQuote } from "lucide-react";
 
 export default async function TestimonialsAdminPage() {
-  const items = await db.testimonial.findMany({
+  let items: any[] = [];
+  try {
+    items = await db.testimonial.findMany({
       orderBy: { displayOrder: "asc" },
     });
+  } catch (err) {
+    console.warn("[admin-testimonials] DB unavailable:", err);
+  }
 
   return (
     <div>
@@ -38,7 +43,7 @@ export default async function TestimonialsAdminPage() {
                   </td>
                   <td style={{ color: "#a1a1aa" }}>{item.role}</td>
                   <td style={{ fontSize: "0.82rem", color: "#71717a", maxWidth: 300, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-                    "{item.content}"
+                    &ldquo;{item.content}&rdquo;
                   </td>
                   <td><span className={`admin-badge ${item.publishStatus === "PUBLISHED" ? "admin-badge-published" : "admin-badge-draft"}`}>{item.publishStatus}</span></td>
                   <td>

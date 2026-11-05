@@ -3,9 +3,14 @@ import Link from "next/link";
 import { Plus, Briefcase } from "lucide-react";
 
 export default async function ExperienceAdminPage() {
-  const experience = await db.experience.findMany({
+  let experience: any[] = [];
+  try {
+    experience = await db.experience.findMany({
       orderBy: [{ displayOrder: "asc" }, { startDate: "desc" }],
     });
+  } catch (err) {
+    console.warn("[admin-experience] DB unavailable:", err);
+  }
 
   return (
     <div>

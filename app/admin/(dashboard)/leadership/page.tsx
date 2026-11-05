@@ -3,9 +3,14 @@ import Link from "next/link";
 import { Plus, Users } from "lucide-react";
 
 export default async function LeadershipAdminPage() {
-  const leadershipRoles = await db.leadership.findMany({
+  let leadershipRoles: any[] = [];
+  try {
+    leadershipRoles = await db.leadership.findMany({
       orderBy: [{ displayOrder: "asc" }, { startDate: "desc" }],
     });
+  } catch (err) {
+    console.warn("[admin-leadership] DB unavailable:", err);
+  }
 
   return (
     <div>

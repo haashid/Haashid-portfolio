@@ -4,9 +4,14 @@ import { Plus } from "lucide-react";
 import Link from "next/link";
 
 export default async function AchievementsAdminPage() {
-  const achievements = await db.achievement.findMany({
+  let achievements: any[] = [];
+  try {
+    achievements = await db.achievement.findMany({
       orderBy: [{ displayOrder: "asc" }, { createdAt: "desc" }],
     });
+  } catch (err) {
+    console.warn("[admin-achievements] DB unavailable:", err);
+  }
 
   return (
     <div>

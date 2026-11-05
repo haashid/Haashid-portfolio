@@ -1848,3 +1848,111 @@ dd {
 .project-card, .content-card, .hero-visual, .terminal-container { border-radius: var(--card-radius, 8px); }
 .button { border-radius: var(--button-radius, 8px); }
 .content-route { width: min(var(--container-width, 1120px), calc(100% - 40px)); }
+
+
+/* ═══════════════════════════════════════════════════════════════
+   MOTION GRAPHICS ENHANCEMENTS
+   ═══════════════════════════════════════════════════════════════ */
+
+.ambient-spotlight {
+  position: fixed;
+  width: 650px;
+  height: 650px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.08) 0%, rgba(139, 92, 246, 0.03) 40%, transparent 70%);
+  filter: blur(40px);
+  opacity: 0.85;
+}
+
+[data-theme="light"] .ambient-spotlight {
+  background: radial-gradient(circle, rgba(14, 165, 233, 0.09) 0%, rgba(99, 102, 241, 0.04) 40%, transparent 70%);
+}
+
+.filter-tabs-bar {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 24px;
+  margin-bottom: 8px;
+}
+
+.filter-tab {
+  position: relative;
+  background: transparent;
+  border: 1px solid var(--line);
+  color: var(--muted);
+  border-radius: 999px;
+  padding: 8px 18px;
+  font-size: 0.86rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: color 0.2s ease, border-color 0.2s ease;
+  outline: none;
+}
+
+.filter-tab:hover {
+  color: var(--ink);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.filter-tab.active {
+  color: var(--ink);
+  border-color: transparent;
+}
+
+.active-filter-bg {
+  position: absolute;
+  inset: 0;
+  background: var(--surface-2);
+  border: 1px solid var(--accent);
+  border-radius: 999px;
+  z-index: -1;
+  box-shadow: 0 0 16px rgba(56, 189, 248, 0.25);
+}
+
+.hero-actions .button,
+.hero-actions .subtle-link,
+.contact-actions .button {
+  transition: transform 0.2s cubic-bezier(0.2, 1, 0.3, 1), box-shadow 0.2s ease;
+}
+
+.hero-actions .button:hover,
+.contact-actions .button:hover {
+  box-shadow: 0 8px 24px rgba(56, 189, 248, 0.25);
+}
+
+.skill-group .tech-row span {
+  cursor: default;
+  transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.skill-group .tech-row span:hover {
+  border-color: var(--accent);
+  color: var(--ink);
+  box-shadow: 0 4px 12px rgba(56, 189, 248, 0.2);
+}
+
+.timeline-marker {
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+}
+
+.timeline-item:hover .timeline-marker {
+  transform: scale(1.15);
+  box-shadow: 0 0 18px var(--accent);
+}
+
+.project-card {
+  position: relative;
+  transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.28s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.28s ease;
+}
+
+.project-cover-image {
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.project-card:hover .project-cover-image {
+  transform: scale(1.04);
+}

@@ -3,9 +3,14 @@ import Link from "next/link";
 import { Plus, GraduationCap } from "lucide-react";
 
 export default async function EducationAdminPage() {
-  const education = await db.education.findMany({
+  let education: any[] = [];
+  try {
+    education = await db.education.findMany({
       orderBy: [{ displayOrder: "asc" }, { startDate: "desc" }],
     });
+  } catch (err) {
+    console.warn("[admin-education] DB unavailable:", err);
+  }
 
   return (
     <div>

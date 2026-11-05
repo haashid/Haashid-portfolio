@@ -4,10 +4,15 @@ import { PenSquare } from "lucide-react";
 import { BlogList } from "./_components/blog-list";
 
 export default async function BlogAdminPage() {
-  const posts = await db.blogPost.findMany({
+  let posts: any[] = [];
+  try {
+    posts = await db.blogPost.findMany({
       orderBy: { createdAt: "desc" },
       include: { categories: true, tags: true },
     });
+  } catch (err) {
+    console.warn("[admin-blog] DB unavailable:", err);
+  }
 
   return (
     <div>

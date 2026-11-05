@@ -18,7 +18,7 @@ import {
   Terminal,
 } from "lucide-react";
 import { AiTwinWidget } from "./ai-twin-widget";
-import { motion, useScroll, useSpring, AnimatePresence } from "framer-motion";
+import { motion, useScroll, useSpring, useMotionValue, AnimatePresence, type Variants } from "framer-motion";
 import { resolveIcon, trophyIcon as TrophyIcon } from "@/lib/icon-registry";
 import Image from "next/image";
 
@@ -261,6 +261,33 @@ function SectionHeader({
   );
 }
 
+function MotionSpotlight() {
+  const mouseX = useMotionValue(-1000);
+  const mouseY = useMotionValue(-1000);
+  const smoothX = useSpring(mouseX, { damping: 30, stiffness: 180 });
+  const smoothY = useSpring(mouseY, { damping: 30, stiffness: 180 });
+
+  useEffect(() => {
+    const handleMove = (e: MouseEvent) => {
+      mouseX.set(e.clientX);
+      mouseY.set(e.clientY);
+    };
+    window.addEventListener("mousemove", handleMove, { passive: true });
+    return () => window.removeEventListener("mousemove", handleMove);
+  }, [mouseX, mouseY]);
+
+  return (
+    <motion.div
+      className="ambient-spotlight"
+      style={{
+        left: smoothX,
+        top: smoothY,
+      }}
+      aria-hidden="true"
+    />
+  );
+}
+
 function ScrollProgress() {
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, {
@@ -331,7 +358,7 @@ function Reveal({
       initial={{ opacity: 0, y }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-60px" }}
-      transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1], delay }}
+      transition={{ duration: 0.55, ease: "easeOut", delay }}
     >
       {children}
     </motion.div>
@@ -527,6 +554,26 @@ function Hero({
   const secondaryCtaText = hero?.secondaryCta || "Connect on LinkedIn";
   const secondaryCtaUrl = hero?.secondaryCtaUrl || linkedinUrl;
 
+  const heroContainerVariants: Variants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.08,
+      },
+    },
+  };
+
+  const heroItemVariants: Variants = {
+    hidden: { opacity: 0, y: 22 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.55, ease: "easeOut" },
+    },
+  };
+
   return (
     <section id="home" className="hero" style={style}>
       <div className="ambient-orbs">
@@ -534,25 +581,48 @@ function Hero({
         <div className="orb orb-2" />
         <div className="orb orb-3" />
       </div>
-      <div className="hero-copy">
-        <p className="eyebrow">{hero?.badge || name}</p>
-        <h1>{heading}</h1>
-        <p className="hero-kicker">{subtitle}</p>
-        <p className="hero-description">{description}</p>
+      <motion.div
+        className="hero-copy"
+        variants={heroContainerVariants}
+        initial="hidden"
+        animate="visible"
+      >
+        <motion.p variants={heroItemVariants} className="eyebrow">{hero?.badge || name}</motion.p>
+        <motion.h1 variants={heroItemVariants}>{heading}</motion.h1>
+        <motion.p variants={heroItemVariants} className="hero-kicker">{subtitle}</motion.p>
+        <motion.p variants={heroItemVariants} className="hero-description">{description}</motion.p>
         {profile?.availabilityStatus && (
-          <p className="hero-availability" aria-label={`Availability: ${availabilityLabels[profile.availabilityStatus] || profile.availabilityStatus.replace(/_/g, " ")}`}>
+          <motion.p
+            variants={heroItemVariants}
+            className="hero-availability"
+            aria-label={`Availability: ${availabilityLabels[profile.availabilityStatus] || profile.availabilityStatus.replace(/_/g, " ")}`}
+          >
             <span aria-hidden="true" />
             {profile.availabilityMessage || availabilityLabels[profile.availabilityStatus] || profile.availabilityStatus.replace(/_/g, " ")}
-          </p>
+          </motion.p>
         )}
-        <div className="hero-actions">
-          <a className="button primary" href={primaryCtaUrl}>
+        <motion.div variants={heroItemVariants} className="hero-actions">
+          <motion.a
+            whileHover={{ scale: 1.04, y: -2 }}
+            whileTap={{ scale: 0.96 }}
+            className="button primary"
+            href={primaryCtaUrl}
+          >
             {primaryCtaText} <ArrowRight size={17} />
-          </a>
-          <a className="button secondary" href={secondaryCtaUrl} target={secondaryCtaUrl.startsWith("http") ? "_blank" : undefined} rel={secondaryCtaUrl.startsWith("http") ? "noreferrer" : undefined}>
+          </motion.a>
+          <motion.a
+            whileHover={{ scale: 1.04, y: -2 }}
+            whileTap={{ scale: 0.96 }}
+            className="button secondary"
+            href={secondaryCtaUrl}
+            target={secondaryCtaUrl.startsWith("http") ? "_blank" : undefined}
+            rel={secondaryCtaUrl.startsWith("http") ? "noreferrer" : undefined}
+          >
             <Linkedin size={17} /> {secondaryCtaText}
-          </a>
-          <a
+          </motion.a>
+          <motion.a
+            whileHover={{ scale: 1.04, y: -2 }}
+            whileTap={{ scale: 0.96 }}
             className="button resume-btn"
             href="/MuhammadHaashid.pdf"
             target="_blank"
@@ -560,18 +630,46 @@ function Hero({
             aria-label="View Muhammad Haashid's resume PDF"
           >
             <FileText size={17} /> Resume
-          </a>
-          <a className="subtle-link" href={githubUrl} target="_blank" rel="noreferrer">
+          </motion.a>
+          <motion.a
+            whileHover={{ scale: 1.04, y: -1 }}
+            className="subtle-link"
+            href={githubUrl}
+            target="_blank"
+            rel="noreferrer"
+          >
             GitHub <ExternalLink size={14} />
-          </a>
-        </div>
-        <p className="cred-line">
+          </motion.a>
+        </motion.div>
+        <motion.p variants={heroItemVariants} className="cred-line">
           National Hackathon Winner · Google Student Ambassador 2026 · Technical Community Leader
-        </p>
-      </div>
-      <div className="hero-visual" aria-label={hero?.heroImageUrl || profile?.avatarUrl ? "Portfolio profile image" : "Animated AI Terminal"}>
-        {(hero?.heroImageUrl || profile?.avatarUrl) ? <Image src={hero?.heroImageUrl || profile?.avatarUrl || ""} alt={hero?.badge || profile?.avatarAlt || name} fill sizes="(max-width: 900px) 100vw, 45vw" unoptimized style={{ objectFit: "cover", borderRadius: "inherit" }} /> : <AnimatedTerminal />}
-      </div>
+        </motion.p>
+      </motion.div>
+      <motion.div
+        className="hero-visual"
+        initial={{ opacity: 0, scale: 0.94, y: 24 }}
+        animate={{ opacity: 1, scale: 1, y: [0, -8, 0] }}
+        transition={{
+          opacity: { duration: 0.6, delay: 0.2 },
+          scale: { duration: 0.6, delay: 0.2 },
+          y: { repeat: Infinity, duration: 6, ease: "easeInOut", delay: 0.8 },
+        }}
+        whileHover={{ scale: 1.02, transition: { duration: 0.25 } }}
+        aria-label={hero?.heroImageUrl || profile?.avatarUrl ? "Portfolio profile image" : "Animated AI Terminal"}
+      >
+        {(hero?.heroImageUrl || profile?.avatarUrl) ? (
+          <Image
+            src={hero?.heroImageUrl || profile?.avatarUrl || ""}
+            alt={hero?.badge || profile?.avatarAlt || name}
+            fill
+            sizes="(max-width: 900px) 100vw, 45vw"
+            unoptimized
+            style={{ objectFit: "cover", borderRadius: "inherit" }}
+          />
+        ) : (
+          <AnimatedTerminal />
+        )}
+      </motion.div>
     </section>
   );
 }
@@ -601,8 +699,21 @@ function ProjectDetail({
   onClose: () => void;
 }) {
   return (
-    <div className="modal-backdrop" onClick={onClose}>
-      <article className="project-modal" onClick={(event) => event.stopPropagation()}>
+    <motion.div
+      className="modal-backdrop"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      onClick={onClose}
+    >
+      <motion.article
+        className="project-modal"
+        initial={{ opacity: 0, scale: 0.92, y: 24 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.92, y: 24 }}
+        transition={{ type: "spring", stiffness: 350, damping: 25 }}
+        onClick={(event) => event.stopPropagation()}
+      >
         <button className="icon-button modal-close" aria-label="Close project details" onClick={onClose}>
           <X size={20} />
         </button>
@@ -639,24 +750,24 @@ function ProjectDetail({
           </dl>
           <div className="tech-row">
             {project.technologies.map((tech) => (
-              <span key={tech}>{tech}</span>
+              <motion.span whileHover={{ scale: 1.08 }} key={tech}>{tech}</motion.span>
             ))}
           </div>
           <div className="modal-actions">
             {project.github ? (
-              <a className="button secondary" href={project.github} target="_blank" rel="noreferrer">
+              <motion.a whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }} className="button secondary" href={project.github} target="_blank" rel="noreferrer">
                 <Github size={17} /> Repository
-              </a>
+              </motion.a>
             ) : null}
             {project.demo ? (
-              <a className="button primary" href={project.demo} target="_blank" rel="noreferrer">
+              <motion.a whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }} className="button primary" href={project.demo} target="_blank" rel="noreferrer">
                 Live demo <ExternalLink size={17} />
-              </a>
+              </motion.a>
             ) : null}
           </div>
         </div>
-      </article>
-    </div>
+      </motion.article>
+    </motion.div>
   );
 }
 
@@ -664,6 +775,7 @@ function ProjectDetail({
 
 export function PortfolioPage({ data }: { data: PortfolioData }) {
   const [selectedProject, setSelectedProject] = useState<DisplayProject | null>(null);
+  const [projectFilter, setProjectFilter] = useState<string>("All");
 
   // Resolve data from props
   const profile = data.profile;
@@ -710,6 +822,25 @@ export function PortfolioPage({ data }: { data: PortfolioData }) {
     () => data.projects.map(mapProject),
     [data.projects],
   );
+
+  const projectCategories = useMemo(() => {
+    const cats = new Set<string>(["All"]);
+    displayProjects.forEach((p) => {
+      if (p.category.includes("AI")) cats.add("AI & Systems");
+      else if (p.category.includes("Blockchain") || p.category.includes("Web3")) cats.add("Blockchain & Web3");
+      else if (p.category.includes("IoT") || p.category.includes("Health")) cats.add("IoT & Embedded");
+      else cats.add("Web & Cloud");
+    });
+    return Array.from(cats);
+  }, [displayProjects]);
+
+  const filteredProjects = useMemo(() => {
+    if (projectFilter === "All") return displayProjects;
+    if (projectFilter === "AI & Systems") return displayProjects.filter((p) => p.category.includes("AI"));
+    if (projectFilter === "Blockchain & Web3") return displayProjects.filter((p) => p.category.includes("Blockchain") || p.category.includes("Web3"));
+    if (projectFilter === "IoT & Embedded") return displayProjects.filter((p) => p.category.includes("IoT") || p.category.includes("Health"));
+    return displayProjects.filter((p) => !p.category.includes("AI") && !p.category.includes("Blockchain") && !p.category.includes("IoT"));
+  }, [displayProjects, projectFilter]);
 
   // Derive "Currently Building" from featured projects
   const currentlyBuilding = useMemo(
@@ -775,6 +906,7 @@ export function PortfolioPage({ data }: { data: PortfolioData }) {
 
   return (
     <main className="portfolio-main">
+      <MotionSpotlight />
       <ScrollProgress />
       <Navbar socialLinks={socialLinks} name={profile?.name || ""} sections={sections} initialTheme={(data.theme as { preset?: string } | null)?.preset === "LIGHT" ? "light" : "dark"} />
       {isSectionEnabled("hero") && (
@@ -844,10 +976,39 @@ export function PortfolioPage({ data }: { data: PortfolioData }) {
           <SectionHeader eyebrow="Selected Work" title="Systems, products and experiments.">
             A curated set of projects chosen for technical depth, evidence, competitive context and range across AI, blockchain, IoT and product engineering.
           </SectionHeader>
-          <div className="project-grid">
-            {displayProjects.map((project, index) => (
-              <Reveal key={project.title} delay={index * 0.03}>
-                <article className="project-card">
+          <div className="filter-tabs-bar">
+            {projectCategories.map((cat) => (
+              <motion.button
+                key={cat}
+                whileHover={{ scale: 1.04 }}
+                whileTap={{ scale: 0.96 }}
+                onClick={() => setProjectFilter(cat)}
+                className={`filter-tab ${projectFilter === cat ? "active" : ""}`}
+              >
+                {cat}
+                {projectFilter === cat && (
+                  <motion.div
+                    layoutId="activeFilterPill"
+                    className="active-filter-bg"
+                    transition={{ type: "spring", stiffness: 450, damping: 30 }}
+                  />
+                )}
+              </motion.button>
+            ))}
+          </div>
+          <motion.div layout className="project-grid">
+            <AnimatePresence mode="popLayout">
+              {filteredProjects.map((project, index) => (
+                <motion.article
+                  key={project.title}
+                  layout
+                  initial={{ opacity: 0, y: 24 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  transition={{ duration: 0.35, delay: index * 0.04 }}
+                  whileHover={{ y: -6 }}
+                  className="project-card"
+                >
                   <ProjectPreview project={project} />
                   <div className="project-body">
                     <p className="project-category">{project.category}</p>
@@ -856,24 +1017,35 @@ export function PortfolioPage({ data }: { data: PortfolioData }) {
                     {project.award ? <strong className="award-pill">{project.award}</strong> : null}
                     <div className="tech-row">
                       {project.technologies.slice(0, 5).map((tech) => (
-                        <span key={tech}>{tech}</span>
+                        <motion.span whileHover={{ scale: 1.08 }} key={tech}>{tech}</motion.span>
                       ))}
                     </div>
                     <div className="project-actions">
-                      <button className="text-button" onClick={() => setSelectedProject(project)}>
+                      <motion.button
+                        whileHover={{ scale: 1.04 }}
+                        whileTap={{ scale: 0.96 }}
+                        className="text-button"
+                        onClick={() => setSelectedProject(project)}
+                      >
                         View case study <ArrowRight size={15} />
-                      </button>
+                      </motion.button>
                       {project.github ? (
-                        <a href={project.github} target="_blank" rel="noreferrer" aria-label={`${project.title} repository`}>
+                        <motion.a
+                          whileHover={{ scale: 1.15, rotate: 6 }}
+                          href={project.github}
+                          target="_blank"
+                          rel="noreferrer"
+                          aria-label={`${project.title} repository`}
+                        >
                           <Github size={18} />
-                        </a>
+                        </motion.a>
                       ) : null}
                     </div>
                   </div>
-                </article>
-              </Reveal>
-            ))}
-          </div>
+                </motion.article>
+              ))}
+            </AnimatePresence>
+          </motion.div>
         </section>
       )}
 
@@ -1052,7 +1224,13 @@ export function PortfolioPage({ data }: { data: PortfolioData }) {
                   <h3>{group.category}</h3>
                   <div className="tech-row">
                     {group.technologies.map((tech) => (
-                      <span key={tech}>{tech}</span>
+                      <motion.span
+                        key={tech}
+                        whileHover={{ scale: 1.1, y: -2, transition: { type: "spring", stiffness: 400, damping: 15 } }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        {tech}
+                      </motion.span>
                     ))}
                   </div>
                 </article>
@@ -1176,7 +1354,11 @@ export function PortfolioPage({ data }: { data: PortfolioData }) {
         <small>© {new Date().getFullYear()} {profile?.name || ""}</small>
       </footer>
 
-      {selectedProject ? <ProjectDetail project={selectedProject} onClose={() => setSelectedProject(null)} /> : null}
+      <AnimatePresence>
+        {selectedProject && (
+          <ProjectDetail project={selectedProject} onClose={() => setSelectedProject(null)} />
+        )}
+      </AnimatePresence>
 
       {/* AI Twin floating widget */}
       <AiTwinWidget />

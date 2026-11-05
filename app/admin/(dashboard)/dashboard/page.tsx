@@ -13,6 +13,8 @@ import {
   Palette,
   Layers,
   User,
+  AlertTriangle,
+  CheckCircle2,
 } from "lucide-react";
 
 async function getStats() {
@@ -27,9 +29,19 @@ async function getStats() {
         db.media.count(),
       ]);
 
-    return { projects, achievements, certificates, blogPosts, experience, media };
+    return { projects, achievements, certificates, blogPosts, experience, media, dbConnected: true, error: null };
   } catch (error) {
-    throw error;
+    console.warn("[admin-dashboard] Could not fetch live database stats:", error);
+    return {
+      projects: 7,
+      achievements: 10,
+      certificates: 0,
+      blogPosts: 0,
+      experience: 3,
+      media: 0,
+      dbConnected: false,
+      error: error instanceof Error ? error.message : "Database connection unavailable",
+    };
   }
 }
 
@@ -40,17 +52,23 @@ async function getRecentActivity() {
       orderBy: { createdAt: "desc" },
       include: { user: { select: { name: true } } },
     });
-  } catch (error) {
-    throw error;
+  } catch {
+    return [];
   }
 }
 
 async function getProfile() {
   try {
-    return await db.profile.findFirst();
-  } catch (error) {
-    throw error;
+    const profile = await db.profile.findFirst();
+    if (profile) return profile;
+  } catch {
+    // Database offline
   }
+  return {
+    name: "Muhammad Haashid",
+    title: "AI Engineer & Technical Builder",
+    availabilityStatus: "OPEN_TO_OPPORTUNITIES",
+  };
 }
 
 export default async function AdminDashboardPage() {
@@ -90,7 +108,9 @@ export default async function AdminDashboardPage() {
           </p>
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-          <span className="admin-badge admin-badge-live">● LIVE</span>
+          <span className={`admin-badge ${stats.dbConnected ? "admin-badge-live" : ""}`} style={!stats.dbConnected ? { background: "rgba(251,191,36,0.15)", color: "#fbbf24", borderColor: "rgba(251,191,36,0.3)" } : undefined}>
+            {stats.dbConnected ? "● LIVE (DB CONNECTED)" : "▲ OFFLINE FALLBACK MODE"}
+          </span>
           <Link
             href="/"
             target="_blank"
@@ -101,6 +121,40 @@ export default async function AdminDashboardPage() {
           </Link>
         </div>
       </div>
+
+      {/* Database Warning Banner if DB connection failed */}
+      {!stats.dbConnected && (
+        <div
+          style={{
+            background: "rgba(251, 191, 36, 0.08)",
+            border: "1px solid rgba(251, 191, 36, 0.3)",
+            borderRadius: "12px",
+            padding: "16px 20px",
+            marginBottom: "24px",
+            display: "flex",
+            alignItems: "flex-start",
+            gap: "14px",
+          }}
+        >
+          <AlertTriangle size={22} style={{ color: "#fbbf24", flexShrink: 0, marginTop: "2px" }} />
+          <div>
+            <h3 style={{ margin: "0 0 6px", fontSize: "0.95rem", color: "#fbbf24", fontWeight: 600 }}>
+              Database Connection Notice
+            </h3>
+            <p style={{ margin: "0 0 8px", fontSize: "0.84rem", color: "#d4d4d8", lineHeight: 1.5 }}>
+              The portfolio is currently serving from high-speed static fallbacks because the PostgreSQL database at Supabase could not be reached.
+            </p>
+            <ul style={{ margin: 0, paddingLeft: "18px", fontSize: "0.8rem", color: "#a1a1aa", lineHeight: 1.6 }}>
+              <li>
+                <strong>Supabase Project Paused?</strong> Log into <a href="https://supabase.com/dashboard" target="_blank" rel="noreferrer" style={{ color: "#38bdf8", textDecoration: "underline" }}>Supabase</a> and click <em>Restore project</em> if it has paused due to inactivity.
+              </li>
+              <li>
+                <strong>Vercel Environment Variables:</strong> Ensure <code>DATABASE_URL</code> and <code>DIRECT_URL</code> are added in your Vercel Project Settings &gt; Environment Variables.
+              </li>
+            </ul>
+          </div>
+        </div>
+      )}
 
       {/* Stats */}
       <div className="admin-stats-grid">
@@ -141,7 +195,7 @@ export default async function AdminDashboardPage() {
             </div>
             <div>
               <p style={{ fontSize: "0.75rem", color: "#71717a", marginBottom: 4 }}>AVAILABILITY</p>
-              <p style={{ fontSize: "0.9rem" }}>{profile.availabilityStatus.replace(/_/g, " ")}</p>
+              <p style={{ fontSize: "0.9rem" }}>{profile.availabilityStatus?.replace(/_/g, " ") || "Open to opportunities"}</p>
             </div>
           </div>
         </div>
@@ -180,7 +234,7 @@ export default async function AdminDashboardPage() {
                 No activity yet. Start managing your portfolio!
               </p>
             ) : (
-              activity.map((log) => (
+              activity.map((log: any) => (
                 <div key={log.id} className="admin-activity-item">
                   <div className="admin-activity-dot" />
                   <div>

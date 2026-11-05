@@ -4,10 +4,15 @@ import { FolderPlus } from "lucide-react";
 import { ProjectsTable } from "./_components/projects-table";
 
 export default async function ProjectsAdminPage() {
-  const projects = await db.project.findMany({
+  let projects: any[] = [];
+  try {
+    projects = await db.project.findMany({
       orderBy: [{ displayOrder: "asc" }, { createdAt: "desc" }],
       include: { images: { take: 1 } },
     });
+  } catch (error) {
+    console.warn("[admin-projects] DB unavailable:", error);
+  }
 
   return (
     <div>
